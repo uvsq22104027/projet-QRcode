@@ -5,6 +5,11 @@ import PIL as pil
 from PIL import Image
 from PIL import ImageTk 
 
+def nbrCol(matrice):
+    return(len(matrice[0]))
+
+def nbrLig(matrice):
+    return len(matrice)
 
 def saving(matPix, filename):#sauvegarde l'image contenue dans matpix dans le fichier filename
 							 #utiliser une extension png pour que la fonction fonctionne sans perte d'information
@@ -43,4 +48,6 @@ def carre():
                 mat_carre[i][j]=[0,0,0,255]
     print (mat_carre[i][j])
 
+
+carre()
 ### je ne comprends pas ca ne m'affiche rien... ca fait deux heures que je suis dessus juste pour avoir fait ca, j'en ai marre je reprendrais plus trad mais je le push quand meme au cas où tu veuilles travailler dessus aussi.
