@@ -1,15 +1,10 @@
-# projet-QRcode
 ###code déjà fourni qui permet de charger et sauvegarder une image en noir et blanc dans le fichier projet.py###
 
 import PIL as pil
 from PIL import Image
 from PIL import ImageTk 
+import tkinter as tk
 
-def nbrCol(matrice):
-    return(len(matrice[0]))
-
-def nbrLig(matrice):
-    return len(matrice)
 
 def saving(matPix, filename):#sauvegarde l'image contenue dans matpix dans le fichier filename
 							 #utiliser une extension png pour que la fonction fonctionne sans perte d'information
@@ -29,8 +24,37 @@ def loading(filename):#charge le fichier image filename et renvoie une matrice d
     return mat
 
 ###############  QUESTION 1  ############
-mat_carre=[[0,0,0,255]*8 for k in range (8)]
+def nbrCol(matrice):
+    return(len(matrice[0]))
+
+def nbrLig(matrice):
+    return len(matrice)
+
+#mat_carre=[[0,0,0,255]*8 for k in range (8)]
+mat_carre = []
+for i in range(8):
+    for j in range(8):
+        mat_carre.append([0,0,0,255])
+
+print(mat_carre)
+print("ok")
+
+def chgmt_carre():
+    global mat_carre
+    mat_carre=[[0,0,0,255]*8 for k in range (8)]
+    for i in range(8):
+        for j in range(8):
+            if i==2:
+                print("ok")
+                mat_carre[i][j]=[255,255,255,255]
+            else :
+                mat_carre[i][j]=[0,0,0,255]
+                
+
+chgmt_carre()
+
 def carre():
+    global mat_carre
     mat_carre=[[0,0,0,255]*8 for k in range (8)]
     for i in range(8):
         for j in range (8):
@@ -46,8 +70,26 @@ def carre():
                 mat_carre[i][j]=[255,255,255,255]
             else:
                 mat_carre[i][j]=[0,0,0,255]
-    print (mat_carre[i][j])
+            print (mat_carre[i][j])
 
 
-carre()
-### je ne comprends pas ca ne m'affiche rien... ca fait deux heures que je suis dessus juste pour avoir fait ca, j'en ai marre je reprendrais plus trad mais je le push quand meme au cas où tu veuilles travailler dessus aussi.
+
+def affiche_matrice():
+    couleur = "grey"
+    for i in range(len(mat_carre)):
+        for j in range(len(mat_carre[i])):
+            couleur = "grey"
+            if mat_carre[i][j]==[255,255,255,255]:
+                couleur = "blue"
+            else :
+                couleur = "pink"
+            canvas.create_rectangle((j-1)*50, (i-1)*50, (j)*50, (i)*50, fill = couleur)
+
+racine = tk.Tk()
+
+canvas = tk.Canvas(racine, width = 800, height = 800, bg = "white")
+canvas.grid(row = 1, column = 1)
+
+affiche_matrice()
+
+racine.mainloop()
