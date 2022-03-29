@@ -68,15 +68,50 @@ def affiche_matrice():
                 couleur = "black"
             canvas.create_rectangle((j)*50, (i)*50, (j+1)*50, (i+1)*50, fill = couleur)
 
+"""
+Je cherche d'abord a comparer avec la matrice des coins : OK
+ensuite je lui ferai regarder là ou il doit y avoir des coins, pour noté où il y en a : Commencé (compart a un endrois donné)
+enfain je lui ferais tourner en fonction
+"""
+
+# Comparaison d'une matrice de 8x8 avec la matrice coin
+def comparaison_coin(matrice_a_comparer, x, y):
+    "Compare une matrice à partire des position x et y avec la matrice coin, retourne True si pareil, faux si différent"
+    # doit regarder pr chaque ij de mat_a_comp si == a mat_coin
+    if x>=len(matrice_a_comparer)-7 or y>=len(matrice_a_comparer)-7:
+        # si pas la place (trop en bas ou trop a doite)
+        return False
+    else :
+        for i in range(len(matrice_a_comparer)):
+            for j in range(len(matrice_a_comparer)):
+                if matrice_a_comparer[x+i][y+j]!=mat_carre[i][j]:
+                    return False
+        return True
+
+# 2 matrices de 8x8 a comparer : x vrai, y faux
+matrice_x = [[[0, 0, 0, 255], [0, 0, 0, 255], [0, 0, 0, 255], [0, 0, 0, 255], [0, 0, 0, 255], [0, 0, 0, 255], [0, 0, 0, 255], [255, 255, 255, 255]], [[0, 0, 0, 255], [255, 255, 255, 255], [255, 255, 255, 255], [255, 255, 255, 255], [255, 255, 255, 255], [255, 255, 255, 255], [0, 0, 0, 255], [255, 255, 255, 255]], [[0, 0, 0, 255], [255, 255, 255, 255], [0, 0, 0, 255], [0, 0, 0, 255], [0, 0, 0, 255], [255, 255, 255, 255], [0, 0, 0, 255], [255, 255, 255, 255]], [[0, 0, 0, 255], [255, 255, 255, 255], [0, 0, 0, 255], [0, 0, 0, 255], [0, 0, 0, 255], [255, 255, 255, 255], [0, 0, 0, 255], [255, 255, 255, 255]], [[0, 0, 0, 255], [255, 255, 255, 255], [0, 0, 0, 255], [0, 0, 0, 255], [0, 0, 0, 255], [255, 255, 255, 255], [0, 0, 0, 255], [255, 255, 255, 255]], [[0, 0, 0, 255], [255, 255, 255, 255], [255, 255, 255, 255], [255, 255, 255, 255], [255, 255, 255, 255], [255, 255, 255, 255], [0, 0, 0, 255], [255, 255, 255, 255]], [[0, 0, 0, 255], [0, 0, 0, 255], [0, 0, 0, 255], [0, 0, 0, 255], [0, 0, 0, 255], [0, 0, 0, 255], [0, 0, 0, 255], [255, 255, 255, 255]], [[255, 255, 255, 255], [255, 255, 255, 255], [255, 255, 255, 255], [255, 255, 255, 255], [255, 255, 255, 255], [255, 255, 255, 255], [255, 255, 255, 255], [255, 255, 255, 255]]]
+matrice_y = [[[255, 0, 0, 255], [0, 0, 0, 255], [0, 0, 0, 255], [0, 0, 0, 255], [0, 0, 0, 255], [0, 0, 0, 255], [0, 0, 0, 255], [255, 255, 255, 255]], [[0, 0, 0, 255], [255, 255, 255, 255], [255, 255, 255, 255], [255, 255, 255, 255], [255, 255, 255, 255], [255, 255, 255, 255], [0, 0, 0, 255], [255, 255, 255, 255]], [[0, 0, 0, 255], [255, 255, 255, 255], [0, 0, 0, 255], [0, 0, 0, 255], [0, 0, 0, 255], [255, 255, 255, 255], [0, 0, 0, 255], [255, 255, 255, 255]], [[0, 0, 0, 255], [255, 255, 255, 255], [0, 0, 0, 255], [0, 0, 0, 255], [0, 0, 0, 255], [255, 255, 255, 255], [0, 0, 0, 255], [255, 255, 255, 255]], [[0, 0, 0, 255], [255, 255, 255, 255], [0, 0, 0, 255], [0, 0, 0, 255], [0, 0, 0, 255], [255, 255, 255, 255], [0, 0, 0, 255], [255, 255, 255, 255]], [[0, 0, 0, 255], [255, 255, 255, 255], [255, 255, 255, 255], [255, 255, 255, 255], [255, 255, 255, 255], [255, 255, 255, 255], [0, 0, 0, 255], [255, 255, 255, 255]], [[0, 0, 0, 255], [0, 0, 0, 255], [0, 0, 0, 255], [0, 0, 0, 255], [0, 0, 0, 255], [0, 0, 0, 255], [0, 0, 0, 255], [255, 255, 255, 255]], [[255, 255, 255, 255], [255, 255, 255, 255], [255, 255, 255, 255], [255, 255, 255, 255], [255, 255, 255, 255], [255, 255, 255, 255], [255, 255, 255, 255], [255, 255, 255, 255]]]
+#print(comparaison_coin(matrice_x,0,0))
+
+#creation d'une matrice de taille 25x25
+mat_25 = []
+for i in range(25):
+    liste = []
+    for j in range(25):
+        liste.append([0,0,0,255])
+    mat_25.append(liste)
+
+print(comparaison_coin(mat_25,17,17))
+
 
 ################
 # Tkinter
 
 racine = tk.Tk()
 
-canvas = tk.Canvas(racine, width = 800, height = 800, bg = "white")
+canvas = tk.Canvas(racine, width = 500, height = 500, bg = "white")
 canvas.grid(row = 1, column = 1)
 
-affiche_matrice()
+#affiche_matrice()
 
-racine.mainloop()
+#racine.mainloop()
