@@ -80,9 +80,9 @@ def affiche_matrice():
         for j in range(len(mat_carre[i])):
             couleur = "grey"
             if mat_carre[i][j]==[255,255,255,255]:
-                couleur = "blue"
+                couleur = "white"
             else :
-                couleur = "pink"
+                couleur = "black"
             canvas.create_rectangle((j-1)*50, (i-1)*50, (j)*50, (i)*50, fill = couleur)
 
 racine = tk.Tk()
