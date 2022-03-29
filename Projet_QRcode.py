@@ -30,22 +30,22 @@ def nbrCol(matrice):
 def nbrLig(matrice):
     return len(matrice)
 
-#mat_carre=[[0,0,0,255]*8 for k in range (8)]
 mat_carre = []
 for i in range(8):
+    liste = []
     for j in range(8):
-        mat_carre.append([0,0,0,255])
-
-print(mat_carre)
-print("ok")
+        liste.append([0,0,0,255])
+    mat_carre.append(liste)
 
 def chgmt_carre():
     global mat_carre
-    mat_carre=[[0,0,0,255]*8 for k in range (8)]
     for i in range(8):
         for j in range(8):
-            if i==2:
-                print("ok")
+            if (i==1 or i == 5) and j<6 and j>0:
+                mat_carre[i][j]=[255,255,255,255]
+            elif (j==1 or j == 5) and i<6 and i>0:
+                mat_carre[i][j]=[255,255,255,255]
+            elif j == 7 or i == 7:
                 mat_carre[i][j]=[255,255,255,255]
             else :
                 mat_carre[i][j]=[0,0,0,255]
@@ -70,7 +70,6 @@ def carre():
                 mat_carre[i][j]=[255,255,255,255]
             else:
                 mat_carre[i][j]=[0,0,0,255]
-            print (mat_carre[i][j])
 
 
 
@@ -83,7 +82,7 @@ def affiche_matrice():
                 couleur = "white"
             else :
                 couleur = "black"
-            canvas.create_rectangle((j-1)*50, (i-1)*50, (j)*50, (i)*50, fill = couleur)
+            canvas.create_rectangle((j)*50, (i)*50, (j+1)*50, (i+1)*50, fill = couleur)
 
 racine = tk.Tk()
 
