@@ -23,13 +23,15 @@ def loading(filename):#charge le fichier image filename et renvoie une matrice d
             mat[i][j]= 0 if toLoad.getpixel((j,i)) == 0 else 1
     return mat
 
-###############  QUESTION 1  ############
 def nbrCol(matrice):
     return(len(matrice[0]))
 
 def nbrLig(matrice):
     return len(matrice)
 
+###############  QUESTION 1  ############
+
+# Création de la matrice des coins
 mat_carre = []
 for i in range(8):
     liste = []
@@ -37,7 +39,9 @@ for i in range(8):
         liste.append([0,0,0,255])
     mat_carre.append(liste)
 
+# Remplissage de la matrice des coins
 def chgmt_carre():
+    "Place les lignes blanche dans la matrice pour les coins"
     global mat_carre
     for i in range(8):
         for j in range(8):
@@ -50,30 +54,10 @@ def chgmt_carre():
             else :
                 mat_carre[i][j]=[0,0,0,255]
                 
-
 chgmt_carre()
 
-def carre():
-    global mat_carre
-    mat_carre=[[0,0,0,255]*8 for k in range (8)]
-    for i in range(8):
-        for j in range (8):
-            if i==0 and j != 7:
-                mat_carre[i][j]=[255,255,255,255]
-            elif j==0 and i != 7:
-                mat_carre[i][j]=[255,255,255,255]
-            elif i==6 and j != 7:
-                mat_carre[i][j]=[255,255,255,255]
-            elif j==6 and i!=7:
-                mat_carre[i][j]=[255,255,255,255]
-            elif 1<i<5 and 1<j<5:
-                mat_carre[i][j]=[255,255,255,255]
-            else:
-                mat_carre[i][j]=[0,0,0,255]
-
-
-
 def affiche_matrice():
+    "affiche la matrice coin dans le canvas (pour vérifier la question 1"
     couleur = "grey"
     for i in range(len(mat_carre)):
         for j in range(len(mat_carre[i])):
@@ -83,6 +67,10 @@ def affiche_matrice():
             else :
                 couleur = "black"
             canvas.create_rectangle((j)*50, (i)*50, (j+1)*50, (i+1)*50, fill = couleur)
+
+
+################
+# Tkinter
 
 racine = tk.Tk()
 
