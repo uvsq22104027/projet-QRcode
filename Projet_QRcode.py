@@ -7,7 +7,7 @@ import tkinter as tk
 import random as rd
 
 from psutil import cpu_count
-
+#bu
 
 def saving(matPix, filename):#sauvegarde l'image contenue dans matpix dans le fichier filename
 							 #utiliser une extension png pour que la fonction fonctionne sans perte d'information
