@@ -5,6 +5,7 @@ from PIL import Image
 from PIL import ImageTk 
 import tkinter as tk
 import random as rd
+from tkinter import filedialog
 
 from psutil import cpu_count
 #bu
@@ -25,6 +26,36 @@ def loading(filename):#charge le fichier image filename et renvoie une matrice d
         for j in range(toLoad.size[0]):
             mat[i][j]= 0 if toLoad.getpixel((j,i)) == 0 else 1
     return mat
+
+create=True
+nomImgCourante=""
+nomImgDebut = ""
+
+def charger(widg):
+    global create
+    global photo
+    global img
+    global canvas
+    global dessin
+    global nomImgCourante
+    global nomImgDebut
+    filename= filedialog.askopenfile(mode='rb', title='Choose a file')
+    img = pil.Image.open(filename)
+    nomImgCourante=filename.name
+    nomImgDebut = filename.name
+    photo = ImageTk.PhotoImage(img)
+    if create:    
+        canvas = tk.Canvas(widg, width = img.size[0], height = img.size[1])
+        dessin = canvas.create_image(0,0,anchor = tk.NW, image=photo)
+        canvas.grid(row=0,column=1,rowspan=4,columnspan=2)
+        create=False
+        
+    else:
+        canvas.grid_forget()
+        canvas = tk.Canvas(widg, width = img.size[0], height = img.size[1])
+        dessin=canvas.create_image(0,0,anchor = tk.NW, image=photo)
+        canvas.grid(row=0,column=1,rowspan=4,columnspan=2)
+
 
 def nbrCol(matrice):
     return(len(matrice[0]))
@@ -172,6 +203,9 @@ racine = tk.Tk()
 
 canvas = tk.Canvas(racine, width = 500, height = 500, bg = "white")
 canvas.grid(row = 1, column = 1)
+
+Bouton_charger=tk.Button(racine, text="charger", command=lambda: charger(racine))
+Bouton_charger.grid(row=5,column=1)
 
 ajoute_coin_hasard(mat_25)
 affiche_matrice(mat_25)
