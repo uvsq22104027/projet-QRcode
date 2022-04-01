@@ -157,7 +157,13 @@ def ajoute_coin_hasard(matrice_a_modif):
         # Faut faire tourné mat_carre aussi !
     if coin_bd == True:
         ajoute_coin(matrice_a_modif,len(matrice_a_modif)-len(mat_carre),len(matrice_a_modif)-len(mat_carre))
-        # Faut faire tourné mat_carre aussi !
+        # F
+        
+def rotation():
+    "tourne vers la droite"
+    #mat_rotate[i][j]=mat[-j-1][i]
+    #gauche : [j][-i-1]
+
 
 ################
 # Tkinter
