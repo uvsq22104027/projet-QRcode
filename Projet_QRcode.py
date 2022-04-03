@@ -50,7 +50,7 @@ def charger(widg):
         canvas.grid(row=0,column=1,rowspan=4,columnspan=2)
         create=False
         
-    else:
+    else: 
         canvas.grid_forget()
         canvas = tk.Canvas(widg, width = img.size[0], height = img.size[1])
         dessin=canvas.create_image(0,0,anchor = tk.NW, image=photo)
@@ -195,6 +195,22 @@ def rotation():
     #mat_rotate[i][j]=mat[-j-1][i]
     #gauche : [j][-i-1]
 
+################# QUESTION 2 ##############
+def question_2(mat_25):
+    "je crois que ca créer juste les trucs, ca va pas verifier si y'a sur une image telechargee..."
+    for i in range(25):
+        for j in range(25):
+            if i== 6 and 7<j<17:
+                if j % 2 ==0:
+                    mat_25[i][j]=[0,0,0,255]
+                else:
+                    mat_25[i][j]=[255,255,255,255]
+            elif j==6 and 7<i<17:
+                if i % 2 ==0:
+                    mat_25[i][j]=[0,0,0,255]
+                else:
+                    mat_25[i][j]=[255,255,255,255]
+                
 
 ################
 # Tkinter
@@ -209,5 +225,7 @@ Bouton_charger.grid(row=5,column=1)
 
 ajoute_coin_hasard(mat_25)
 affiche_matrice(mat_25)
+question_2(mat_25)
+
 
 racine.mainloop()
