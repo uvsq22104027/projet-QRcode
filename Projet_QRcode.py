@@ -1,3 +1,20 @@
+
+"""
+Tout ce qui est affichage existe seulement pour tester
+
+Fait : 
+- fonction rotation
+- fct rotation appliquer aux coin
+
+A faire :
+- clean
+- Verifier que tout marche
+
+- charger un qr code 
+- savoir le lire
+- le faire tourné
+"""
+
 ###code déjà fourni qui permet de charger et sauvegarder une image en noir et blanc dans le fichier projet.py###
 
 import PIL as pil
@@ -6,9 +23,6 @@ from PIL import ImageTk
 import tkinter as tk
 import random as rd
 from tkinter import filedialog
-
-from psutil import cpu_count
-#bu
 
 def saving(matPix, filename):#sauvegarde l'image contenue dans matpix dans le fichier filename
 							 #utiliser une extension png pour que la fonction fonctionne sans perte d'information
@@ -65,7 +79,7 @@ def nbrLig(matrice):
 
 ###############  QUESTION 1  ############
 
-# Création de la matrice des coins
+# Création de la matrice des coins (mat_carre)
 mat_carre = []
 for i in range(8):
     liste = []
@@ -74,25 +88,21 @@ for i in range(8):
     mat_carre.append(liste)
 
 # Remplissage de la matrice des coins
-def chgmt_carre():
-    "Place les lignes blanche dans la matrice pour les coins"
-    global mat_carre
-    for i in range(8):
-        for j in range(8):
-            if (i==1 or i == 5) and j<6 and j>0:
-                mat_carre[i][j]=[255,255,255,255]
-            elif (j==1 or j == 5) and i<6 and i>0:
-                mat_carre[i][j]=[255,255,255,255]
-            elif j == 7 or i == 7:
-                mat_carre[i][j]=[255,255,255,255]
-            else :
-                mat_carre[i][j]=[0,0,0,255]
-                
-chgmt_carre()
+for i in range(8):
+    for j in range(8):
+        if (i==1 or i == 5) and j<6 and j>0:
+            mat_carre[i][j]=[255,255,255,255]
+        elif (j==1 or j == 5) and i<6 and i>0:
+            mat_carre[i][j]=[255,255,255,255]
+        elif j == 7 or i == 7:
+            mat_carre[i][j]=[255,255,255,255]
+        else :
+            mat_carre[i][j]=[0,0,0,255]
 
-def affiche_matrice(matrice):
-    "affiche la matrice coin dans le canvas (pour vérifier la question 1"
-    taille = 500/len(matrice)
+
+def affiche_matrice(matrice): #Pour nos tests
+    "affiche une matrice dans le canvas"
+    taille = taille_canvas/len(matrice)
     for i in range(len(matrice)):
         for j in range(len(matrice[i])):
             couleur = "grey"
@@ -102,10 +112,6 @@ def affiche_matrice(matrice):
                 couleur = "black"
             canvas.create_rectangle((j)*taille, (i)*taille, (j+1)*taille, (i+1)*taille, fill = couleur)
 
-"""
-- Verifier que tout marche
-- Faire tourner la matrice en fonction
-"""
 
 # Comparaison d'une matrice de 8x8 avec la matrice coin
 def comparaison_coin(matrice_a_comparer, x, y):
@@ -134,10 +140,10 @@ for i in range(25):
         liste.append([255,255,255,255])
     mat_25.append(liste)
 
-print(comparaison_coin(mat_25,17,17))
+#print(comparaison_coin(mat_25,17,17))
 
 def regarde_aux_coins(matrice):
-    "regarde ou il y a des coin et donne des instruction pour la rotation"
+    "regarde ou il y a des coin et donne des instruction pour la rotation du Qr code" #pas encore utilisé
     coin_haut_gauche = comparaison_coin(matrice,0,0)
     coin_haut_droite = comparaison_coin(matrice,0,len(matrice(25-len(mat_carre))))
     coin_bas_gauche = comparaison_coin(matrice,len(matrice(25-len(mat_carre)),0))
@@ -156,12 +162,12 @@ def regarde_aux_coins(matrice):
         # ou 2 a droite
     return(rotation)
 
-def ajoute_coin(matrice_a_modif,x,y):
-    print("ok", x,y)
+def ajoute_coin(matrice_a_modif, matrice_a_ajouté,x,y):
+    #print("ok", x,y)
     "rajoute un coin a un endrois donner"
-    for i in range(len(mat_carre)):
-        for j in range(len(mat_carre)):
-            matrice_a_modif[x+i][y+j] = mat_carre[i][j]
+    for i in range(len(matrice_a_ajouté)):
+        for j in range(len(matrice_a_ajouté)):
+            matrice_a_modif[x+i][y+j] = matrice_a_ajouté[i][j]
 
 def ajoute_coin_hasard(matrice_a_modif):
     "rajoute au hasard des coins sur 3 des 4 coins de mat_27"
@@ -179,21 +185,39 @@ def ajoute_coin_hasard(matrice_a_modif):
     else :
         coin_bd = False
     if coin_hg == True:
-        ajoute_coin(matrice_a_modif,0,0)
+        ajoute_coin(matrice_a_modif,mat_carre,0,0)
     if coin_hd == True:
-        ajoute_coin(matrice_a_modif,0,len(matrice_a_modif)-len(mat_carre))
+        ajoute_coin(matrice_a_modif,rotation_multiple(mat_carre,1),0,len(matrice_a_modif)-len(mat_carre))
         # Faut faire tourné mat_carre aussi !
     if coin_bg == True:
-        ajoute_coin(matrice_a_modif,len(matrice_a_modif)-len(mat_carre),0)
+        ajoute_coin(matrice_a_modif,rotation_multiple(mat_carre,3),len(matrice_a_modif)-len(mat_carre),0)
         # Faut faire tourné mat_carre aussi !
     if coin_bd == True:
-        ajoute_coin(matrice_a_modif,len(matrice_a_modif)-len(mat_carre),len(matrice_a_modif)-len(mat_carre))
+        ajoute_coin(matrice_a_modif,rotation_multiple(mat_carre,2),len(matrice_a_modif)-len(mat_carre),len(matrice_a_modif)-len(mat_carre))
         # F
-        
-def rotation():
-    "tourne vers la droite"
-    #mat_rotate[i][j]=mat[-j-1][i]
-    #gauche : [j][-i-1]
+
+def rotation_multiple(matrice,nbr_rotation):
+    mat=matrice
+    while nbr_rotation != 0:
+        mat = rotation(mat)
+        nbr_rotation -= 1
+    return mat
+
+def rotation(matrice):
+    "fait tournée une matrice sur la droite"
+    matrice_tourne=[]
+
+    for i in range(nbrCol(matrice)):
+        matrice_tourne.append([])
+        for j in range(nbrLig(matrice)):
+            matrice_tourne[i].append([])
+
+    # tourne 1 fois à droite
+    for i in range(nbrLig(matrice)):
+        for j in range(nbrCol(matrice)):
+            matrice_tourne[i][j]=matrice[-j-1][i]
+
+    return matrice_tourne
 
 ################# QUESTION 2 ##############
 def question_2(mat_25):
@@ -217,15 +241,19 @@ def question_2(mat_25):
 
 racine = tk.Tk()
 
-canvas = tk.Canvas(racine, width = 500, height = 500, bg = "white")
+taille_canvas = 500
+
+canvas = tk.Canvas(racine, width = taille_canvas, height = taille_canvas, bg = "white")
 canvas.grid(row = 1, column = 1)
 
 Bouton_charger=tk.Button(racine, text="charger", command=lambda: charger(racine))
 Bouton_charger.grid(row=5,column=1)
+mat_test=[[[255,255,255,255],[255,255,255,255],[255,255,255,255]],[[0,0,0,255],[0,0,0,255],[0,0,0,255]],[[255,255,255,255],[255,255,255,255],[255,255,255,255]]]
 
 ajoute_coin_hasard(mat_25)
 affiche_matrice(mat_25)
 question_2(mat_25)
+
 
 
 racine.mainloop()
