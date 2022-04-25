@@ -13,6 +13,7 @@ A faire :
 - charger un qr code 
 - savoir le lire
 - le faire tourné
+test
 """
 
 ###code déjà fourni qui permet de charger et sauvegarder une image en noir et blanc dans le fichier projet.py###
