@@ -236,7 +236,40 @@ def question_2(mat_25):
                 else:
                     mat_25[i][j]=[255,255,255,255]
     return mat_25
-                
+
+############### QUESTION 3 ###################################@
+liste_essay=[0,0,0,0,1,1,0]
+
+def code_Hamming(liste):
+    c1=liste[0]+liste[1]+liste[3]
+    c2=liste[0]+liste[2]+liste[3]
+    c3=liste[1]+liste[2]+liste[3]
+    if c1!=liste[4] and c2!=liste[5] and c3==liste[6]:
+        liste[0]=(liste[0]+1)%2
+        print(liste[0])
+    if c1!=liste[4] and c3!=liste[6] and c2==liste[5]:
+        liste[1]=(liste[1]+1)%2
+        print(liste[1])
+    if c2!=liste[5] and c3!=liste[6] and c1==liste[4]:
+        liste[2]=(liste[2]+1)%2
+        print(liste[0])
+    if c2!=liste[5] and c3!=liste[6] and c1!=liste[4]:
+        liste[3]=(liste[3]+1)%2
+        print(liste[0])
+    if c1!=liste[4] and (c2==liste[5] and c3==liste[6]):
+        liste[4]=(liste[4]+1)%2
+        print(liste[4])
+    if c2!=liste[5] and (c1==liste[4] and c3==liste[6]):
+        liste[5]=(liste[5]+1)%2
+        print(liste[4])
+    if c3!=liste[6] and (c2==liste[5] and c1==liste[4]):
+        liste[6]=(liste[6]+1)%2
+        print(liste[6])
+
+    return liste
+
+code_Hamming(liste_essay)
+print(liste_essay)    
 
 ################
 # Tkinter
