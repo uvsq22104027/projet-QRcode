@@ -238,38 +238,80 @@ def question_2(mat_25):
     return mat_25
 
 ############### QUESTION 3 ###################################@
-liste_essay=[0,0,0,0,1,1,0]
+liste_essay1=[1,1,1,1,1,1,1]
+liste_essay2=[1,0,1,1,1,0,1]
 
 def code_Hamming(liste):
+    l=[]
     c1=liste[0]+liste[1]+liste[3]
     c2=liste[0]+liste[2]+liste[3]
     c3=liste[1]+liste[2]+liste[3]
     if c1!=liste[4] and c2!=liste[5] and c3==liste[6]:
         liste[0]=(liste[0]+1)%2
-        print(liste[0])
     if c1!=liste[4] and c3!=liste[6] and c2==liste[5]:
         liste[1]=(liste[1]+1)%2
-        print(liste[1])
     if c2!=liste[5] and c3!=liste[6] and c1==liste[4]:
         liste[2]=(liste[2]+1)%2
-        print(liste[0])
     if c2!=liste[5] and c3!=liste[6] and c1!=liste[4]:
         liste[3]=(liste[3]+1)%2
-        print(liste[0])
     if c1!=liste[4] and (c2==liste[5] and c3==liste[6]):
         liste[4]=(liste[4]+1)%2
-        print(liste[4])
     if c2!=liste[5] and (c1==liste[4] and c3==liste[6]):
         liste[5]=(liste[5]+1)%2
-        print(liste[4])
     if c3!=liste[6] and (c2==liste[5] and c1==liste[4]):
         liste[6]=(liste[6]+1)%2
-        print(liste[6])
 
-    return liste
+    l.append(liste[0])
+    l.append(liste[1])
+    l.append(liste[2])
+    l.append(liste[3])
 
-code_Hamming(liste_essay)
-print(liste_essay)    
+    return l
+
+code_Hamming(liste_essay1)
+print(liste_essay1)
+code_Hamming(liste_essay2)
+print(liste_essay2)
+
+
+############### QUESTION 5 ##################
+def question5(liste1, liste2):
+    ######## Hexadecimal #######
+    s1=0
+    s2=0
+    for i in range(len(liste1)):
+        s1+=(liste1[-1-i]*(2**i))
+    if s1==10:
+        s1="A"
+    if s1==11:
+        s1="B"
+    if s1==12:
+        s1="C"
+    if s1==13:
+        s1="D"
+    if s1==14:
+        s1="E"
+    if s1==15:
+        s1="F"
+    print(s1)
+    for i in range(len(liste2)):
+        s2+=(liste2[-1-i]*(2**i))
+    if s2==10:
+        s2="A"
+    if s2==11:
+        s2="B"
+    if s2==12:
+        s2="C"
+    if s2==13:
+        s2="D"
+    if s2==14:
+        s2="E"
+    if s2==15:
+        s2="F"
+    print(s2)
+    ############# ACSII ############
+
+question5(code_Hamming(liste_essay1), code_Hamming(liste_essay2))   
 
 ################
 # Tkinter
