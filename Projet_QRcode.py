@@ -1,19 +1,6 @@
-
 """
-Tout ce qui est affichage existe seulement pour tester
-
-Fait : 
-- fonction rotation
-- fct rotation appliquer aux coin
-
-A faire :
-- clean
-- Verifier que tout marche
-
-- charger un qr code 
-- savoir le lire
-- le faire tourné
-test
+comparaison mat carre et pointiller : 1er if, remetre si matrice a comparer plus petite que mat carre/ligne
+finir comparaison ligne
 """
 
 ###code déjà fourni qui permet de charger et sauvegarder une image en noir et blanc dans le fichier projet.py###
@@ -33,13 +20,23 @@ def saving(matPix, filename):#sauvegarde l'image contenue dans matpix dans le fi
             toSave.putpixel((j,i),matPix[i][j])
     toSave.save(filename)
 
+mat_charger = []
+
 def loading(filename):#charge le fichier image filename et renvoie une matrice de 0 et de 1 qui représente 
 					  #l'image en noir et blanc
+    global mat_charger
     toLoad=pil.Image.open(filename)
     mat=[[0]*toLoad.size[0] for k in range(toLoad.size[1])]
     for i in range(toLoad.size[1]):
         for j in range(toLoad.size[0]):
             mat[i][j]= 0 if toLoad.getpixel((j,i)) == 0 else 1
+    mat_charger = mat
+    for i in range(len(mat_charger)):
+        for j in range(len(mat_charger)):
+            if mat_charger[i][j]==0:
+                mat_charger[i][j]=1
+            elif mat_charger[i][j]==1:
+                mat_charger[i][j]=0
     return mat
 
 create=True
@@ -70,6 +67,7 @@ def charger(widg):
         canvas = tk.Canvas(widg, width = img.size[0], height = img.size[1])
         dessin=canvas.create_image(0,0,anchor = tk.NW, image=photo)
         canvas.grid(row=0,column=1,rowspan=4,columnspan=2)
+    loading(filename)
 
 
 def nbrCol(matrice):
@@ -85,119 +83,145 @@ mat_carre = []
 for i in range(8):
     liste = []
     for j in range(8):
-        liste.append([0,0,0,255])
+        liste.append(1)
     mat_carre.append(liste)
-
 # Remplissage de la matrice des coins
 for i in range(8):
     for j in range(8):
         if (i==1 or i == 5) and j<6 and j>0:
-            mat_carre[i][j]=[255,255,255,255]
+            mat_carre[i][j]=0
         elif (j==1 or j == 5) and i<6 and i>0:
-            mat_carre[i][j]=[255,255,255,255]
+            mat_carre[i][j]=0
         elif j == 7 or i == 7:
-            mat_carre[i][j]=[255,255,255,255]
+            mat_carre[i][j]=0
         else :
-            mat_carre[i][j]=[0,0,0,255]
+            mat_carre[i][j]=1
 
+## Question 2
+# Création et remplissage de la matrice pointiller entre les coins (mat_carre)
+mat_ligne = [] 
+for i in range(9):
+    if i % 2 == 0:
+        mat_ligne.append(1)
+    elif i % 2 == 1:
+        mat_ligne.append(0)
 
-def affiche_matrice(matrice): #Pour nos tests
-    "affiche une matrice dans le canvas"
-    taille = taille_canvas/len(matrice)
-    for i in range(len(matrice)):
-        for j in range(len(matrice[i])):
-            couleur = "grey"
-            if matrice[i][j]==[255,255,255,255]:
-                couleur = "white"
-            else :
-                couleur = "black"
-            canvas.create_rectangle((j)*taille, (i)*taille, (j+1)*taille, (i+1)*taille, fill = couleur)
-
-
+a=[]
 # Comparaison d'une matrice de 8x8 avec la matrice coin
 def comparaison_coin(matrice_a_comparer, x, y):
     "Compare une matrice à partire des position x et y avec la matrice coin, retourne True si pareil, faux si différent"
+    global a
     # doit regarder pr chaque ij de mat_a_comp si == a mat_coin
-    if x>=len(matrice_a_comparer)-7 or y>=len(matrice_a_comparer)-7:
+    #if x>=len(matrice_a_comparer)-7 or y>=len(matrice_a_comparer)-7:
+    if 1!=1:
         # si pas la place (trop en bas ou trop a doite)
         return False
     else :
-        for i in range(len(matrice_a_comparer)):
-            for j in range(len(matrice_a_comparer)):
-                if matrice_a_comparer[x+i][y+j]!=mat_carre[i][j]:
-                    return False
-        return True
+        cpt = 0
+        for i in range(len(mat_carre)):
+            for j in range(len(mat_carre)):
+                mat = 2
+                if matrice_a_comparer[x+i][y+j] == 0:
+                    mat = 0
+                elif matrice_a_comparer[x+i][y+j] == 1:
+                    mat = 1
+                if mat==mat_carre[i][j]:
+                    cpt += 1
+                else :
+                    cpt += 0
+        if cpt == len(mat_carre)*len(mat_carre[0]):
+            a.append((x,y))
+            return True
+        else :
+            return False
 
-# 2 matrices de 8x8 a comparer : x vrai, y faux
-matrice_x = [[[0, 0, 0, 255], [0, 0, 0, 255], [0, 0, 0, 255], [0, 0, 0, 255], [0, 0, 0, 255], [0, 0, 0, 255], [0, 0, 0, 255], [255, 255, 255, 255]], [[0, 0, 0, 255], [255, 255, 255, 255], [255, 255, 255, 255], [255, 255, 255, 255], [255, 255, 255, 255], [255, 255, 255, 255], [0, 0, 0, 255], [255, 255, 255, 255]], [[0, 0, 0, 255], [255, 255, 255, 255], [0, 0, 0, 255], [0, 0, 0, 255], [0, 0, 0, 255], [255, 255, 255, 255], [0, 0, 0, 255], [255, 255, 255, 255]], [[0, 0, 0, 255], [255, 255, 255, 255], [0, 0, 0, 255], [0, 0, 0, 255], [0, 0, 0, 255], [255, 255, 255, 255], [0, 0, 0, 255], [255, 255, 255, 255]], [[0, 0, 0, 255], [255, 255, 255, 255], [0, 0, 0, 255], [0, 0, 0, 255], [0, 0, 0, 255], [255, 255, 255, 255], [0, 0, 0, 255], [255, 255, 255, 255]], [[0, 0, 0, 255], [255, 255, 255, 255], [255, 255, 255, 255], [255, 255, 255, 255], [255, 255, 255, 255], [255, 255, 255, 255], [0, 0, 0, 255], [255, 255, 255, 255]], [[0, 0, 0, 255], [0, 0, 0, 255], [0, 0, 0, 255], [0, 0, 0, 255], [0, 0, 0, 255], [0, 0, 0, 255], [0, 0, 0, 255], [255, 255, 255, 255]], [[255, 255, 255, 255], [255, 255, 255, 255], [255, 255, 255, 255], [255, 255, 255, 255], [255, 255, 255, 255], [255, 255, 255, 255], [255, 255, 255, 255], [255, 255, 255, 255]]]
-matrice_y = [[[255, 0, 0, 255], [0, 0, 0, 255], [0, 0, 0, 255], [0, 0, 0, 255], [0, 0, 0, 255], [0, 0, 0, 255], [0, 0, 0, 255], [255, 255, 255, 255]], [[0, 0, 0, 255], [255, 255, 255, 255], [255, 255, 255, 255], [255, 255, 255, 255], [255, 255, 255, 255], [255, 255, 255, 255], [0, 0, 0, 255], [255, 255, 255, 255]], [[0, 0, 0, 255], [255, 255, 255, 255], [0, 0, 0, 255], [0, 0, 0, 255], [0, 0, 0, 255], [255, 255, 255, 255], [0, 0, 0, 255], [255, 255, 255, 255]], [[0, 0, 0, 255], [255, 255, 255, 255], [0, 0, 0, 255], [0, 0, 0, 255], [0, 0, 0, 255], [255, 255, 255, 255], [0, 0, 0, 255], [255, 255, 255, 255]], [[0, 0, 0, 255], [255, 255, 255, 255], [0, 0, 0, 255], [0, 0, 0, 255], [0, 0, 0, 255], [255, 255, 255, 255], [0, 0, 0, 255], [255, 255, 255, 255]], [[0, 0, 0, 255], [255, 255, 255, 255], [255, 255, 255, 255], [255, 255, 255, 255], [255, 255, 255, 255], [255, 255, 255, 255], [0, 0, 0, 255], [255, 255, 255, 255]], [[0, 0, 0, 255], [0, 0, 0, 255], [0, 0, 0, 255], [0, 0, 0, 255], [0, 0, 0, 255], [0, 0, 0, 255], [0, 0, 0, 255], [255, 255, 255, 255]], [[255, 255, 255, 255], [255, 255, 255, 255], [255, 255, 255, 255], [255, 255, 255, 255], [255, 255, 255, 255], [255, 255, 255, 255], [255, 255, 255, 255], [255, 255, 255, 255]]]
-#print(comparaison_coin(matrice_x,0,0))
+b = []
+# // matrice pointiller
+def comparaison_ligne_horizontal(matrice_a_comparer, x, y):
+    "Compare une matrice à partire des position x et y avec la matrice pointiller, retourne True si pareil, faux si différent"
+    global b
+    if 1!=1:
+        # si pas la place (trop en bas ou trop a doite)
+        return False
+    else :
+        cpt = 0
+        for i in range(len(mat_ligne)):
+            mat = 2
+            if matrice_a_comparer[x+i][y] == 0:
+                mat = 0
+            elif matrice_a_comparer[x+i][y] == 1:
+                mat = 1
+            if mat==mat_carre[i][j]:
+                cpt += 1
+            else :
+                cpt += 0
+        if cpt == len(mat_ligne):
+            b.append((x,y))
+            return True
+        else :
+            return False
 
-#creation d'une matrice de taille 25x25
-mat_25 = []
-for i in range(25):
-    liste = []
-    for j in range(25):
-        liste.append([255,255,255,255])
-    mat_25.append(liste)
 
-#print(comparaison_coin(mat_25,17,17))
+b2 = []
+def comparaison_ligne_vertical(matrice_a_comparer, x, y):
+    "Compare une matrice à partire des position x et y avec la matrice pointiller, retourne True si pareil, faux si différent"
+    global b2
+    if 1!=1:
+        # si pas la place (trop en bas ou trop a doite)
+        return False
+    else :
+        cpt = 0
+        for i in range(len(mat_ligne)):
+            mat = 2
+            if matrice_a_comparer[x][y+i] == 0:
+                mat = 0
+            elif matrice_a_comparer[x][y+i] == 1:
+                mat = 1
+            if mat==mat_carre[i][j]:
+                cpt += 1
+            else :
+                cpt += 0
+        if cpt == len(mat_ligne):
+            b2.append((x,y))
+            return True
+        else :
+            return False
 
-def regarde_aux_coins(matrice):
-    "regarde ou il y a des coin et donne des instruction pour la rotation du Qr code" #pas encore utilisé
+
+def recup_coin(matrice,x,y):
+    "fonction secondaire pour regarde_coin_25, recupere un morceau d'une matrice de la taille d'un coin"
+    res = [[] for i in range(8)]
+    for i in range(0,len(mat_carre)):
+        for j in range(0,len(mat_carre[0])):
+            res[i].append(matrice[x+i][y+j])
+    return res
+
+def regarde_coin_25(matrice):
+    "Sur la matrice de 25/25, regarde où il y a des coins et retourne le nombre de rotation à faire"
+    mat_hd = rotation_multiple(recup_coin(matrice,0,25-8),3)
+    mat_bg = rotation(recup_coin(matrice,25-8,0))
+    mat_bd = rotation_multiple(recup_coin(matrice,25-8,25-8),2)
     coin_haut_gauche = comparaison_coin(matrice,0,0)
-    coin_haut_droite = comparaison_coin(matrice,0,len(matrice(25-len(mat_carre))))
-    coin_bas_gauche = comparaison_coin(matrice,len(matrice(25-len(mat_carre)),0))
-    coin_bas_droite = comparaison_coin(matrice,len(matrice(25-len(mat_carre)),len(matrice(25-len(mat_carre)))))
-    if not coin_bas_droite:
-        rotation = "rien"
-        # ou 0 a droite
-    elif not coin_bas_gauche :
-        rotation = "gauche"
-        # ou 3 a droite
-    elif not coin_haut_droite:
-        rotation = "droite"
-        # ou 1 a droite
+    coin_haut_droite = comparaison_coin(mat_hd,0,0)
+    coin_bas_gauche = comparaison_coin(mat_bg,0,0)
+    coin_bas_droite = comparaison_coin(mat_bd,0,0)
+    if not(coin_bas_droite) :
+        print("0")
+        return 0
+    elif not(coin_bas_gauche) :
+        print("3")
+        return 3
+    elif not(coin_haut_droite) :
+        print("1")
+        return 1
+    elif not(coin_haut_gauche) :
+        print("2")
+        return 2
     else :
-        rotation = "2"
-        # ou 2 a droite
-    return(rotation)
-
-def ajoute_coin(matrice_a_modif, matrice_a_ajouté,x,y):
-    #print("ok", x,y)
-    "rajoute un coin a un endrois donner"
-    for i in range(len(matrice_a_ajouté)):
-        for j in range(len(matrice_a_ajouté)):
-            matrice_a_modif[x+i][y+j] = matrice_a_ajouté[i][j]
-
-def ajoute_coin_hasard(matrice_a_modif):
-    "rajoute au hasard des coins sur 3 des 4 coins de mat_27"
-    coin = rd.randint(0,4)
-    coin_hg = True
-    coin_hd = True
-    coin_bg = True
-    coin_bd = True
-    if coin == 1 :
-        coin_hg = False
-    elif coin == 2 :
-        coin_hd = False
-    elif coin == 3 :
-        coin_bg = False
-    else :
-        coin_bd = False
-    if coin_hg == True:
-        ajoute_coin(matrice_a_modif,mat_carre,0,0)
-    if coin_hd == True:
-        ajoute_coin(matrice_a_modif,rotation_multiple(mat_carre,1),0,len(matrice_a_modif)-len(mat_carre))
-        # Faut faire tourné mat_carre aussi !
-    if coin_bg == True:
-        ajoute_coin(matrice_a_modif,rotation_multiple(mat_carre,3),len(matrice_a_modif)-len(mat_carre),0)
-        # Faut faire tourné mat_carre aussi !
-    if coin_bd == True:
-        ajoute_coin(matrice_a_modif,rotation_multiple(mat_carre,2),len(matrice_a_modif)-len(mat_carre),len(matrice_a_modif)-len(mat_carre))
-        # F
+        print("pblm")
 
 def rotation_multiple(matrice,nbr_rotation):
+    "appel plusieurs fois rotation"
     mat=matrice
     while nbr_rotation != 0:
         mat = rotation(mat)
@@ -219,23 +243,6 @@ def rotation(matrice):
             matrice_tourne[i][j]=matrice[-j-1][i]
 
     return matrice_tourne
-
-################# QUESTION 2 ##############
-def question_2(mat_25):
-    "je crois que ca créer juste les trucs, ca va pas verifier si y'a sur une image telechargee..."
-    for i in range(25):
-        for j in range(25):
-            if i== 6 and 7<j<17:
-                if j % 2 ==0:
-                    mat_25[i][j]=[0,0,0,255]
-                else:
-                    mat_25[i][j]=[255,255,255,255]
-            elif j==6 and 7<i<17:
-                if i % 2 ==0:
-                    mat_25[i][j]=[0,0,0,255]
-                else:
-                    mat_25[i][j]=[255,255,255,255]
-    return mat_25
 
 ############### QUESTION 3 ###################################@
 liste_essay1=[1,1,1,1,1,1,1]
@@ -273,6 +280,16 @@ print(liste_essay1)
 code_Hamming(liste_essay2)
 print(liste_essay2)
 
+############### QUESTION 4 ##################
+
+def lecture_1_bloc(x, y):
+    "lit un morceau de la matrice charger de 2/14 et retourne les données brutes"
+    res = [[],[]]
+    for i in range(2):
+        for j in range(7):
+            res[i].append(mat_charger[x+i][y+j])
+    print(res)
+    return res
 
 ############### QUESTION 5 ##################
 def question5(liste1, liste2):
@@ -318,18 +335,13 @@ question5(code_Hamming(liste_essay1), code_Hamming(liste_essay2))
 
 racine = tk.Tk()
 
-taille_canvas = 500
-
-canvas = tk.Canvas(racine, width = taille_canvas, height = taille_canvas, bg = "white")
-canvas.grid(row = 1, column = 1)
 
 Bouton_charger=tk.Button(racine, text="charger", command=lambda: charger(racine))
 Bouton_charger.grid(row=5,column=1)
-mat_test=[[[255,255,255,255],[255,255,255,255],[255,255,255,255]],[[0,0,0,255],[0,0,0,255],[0,0,0,255]],[[255,255,255,255],[255,255,255,255],[255,255,255,255]]]
 
-ajoute_coin_hasard(mat_25)
-affiche_matrice(mat_25)
-question_2(mat_25)
+Bouton_comparer=tk.Button(racine, text="comparer", command=lambda: lecture_1_bloc(0, 0))
+Bouton_comparer.grid(row=5,column=2)
+#regarde_coin_25(mat_charger)
 
 
 
