@@ -11,6 +11,7 @@ from PIL import ImageTk
 import tkinter as tk
 import random as rd
 from tkinter import filedialog
+from string import ascii_letters, ascii_lowercase, ascii_uppercase
 
 def saving(matPix, filename):#sauvegarde l'image contenue dans matpix dans le fichier filename
 							 #utiliser une extension png pour que la fonction fonctionne sans perte d'information
@@ -68,6 +69,14 @@ def charger(widg):
         dessin=canvas.create_image(0,0,anchor = tk.NW, image=photo)
         canvas.grid(row=0,column=1,rowspan=4,columnspan=2)
     loading(filename)
+
+def modify(matrice):
+    global imgModif
+    global nomImgCourante
+    saving(matrice,"modif.png")
+    imgModif=ImageTk.PhotoImage(file="modif.png")
+    canvas.itemconfigure(dessin, image=imgModif)
+    nomImgCourante="modif.png"
 
 
 def nbrCol(matrice):
@@ -245,9 +254,6 @@ def rotation(matrice):
     return matrice_tourne
 
 ############### QUESTION 3 ###################################@
-liste_essay1=[1,1,1,1,1,1,1]
-liste_essay2=[1,0,1,1,1,0,1]
-
 def code_Hamming(liste):
     l=[]
     c1=liste[0]+liste[1]+liste[3]
@@ -275,16 +281,12 @@ def code_Hamming(liste):
 
     return l
 
-code_Hamming(liste_essay1)
-print(liste_essay1)
-code_Hamming(liste_essay2)
-print(liste_essay2)
-
 ############### QUESTION 4 ##################
 
+res = [[],[]]
 def lecture_1_bloc(x, y):
     "lit un morceau de la matrice charger de 2/14 et retourne les données brutes"
-    res = [[],[]]
+    global res
     for i in range(2):
         for j in range(7):
             res[i].append(mat_charger[x+i][y+j])
@@ -296,6 +298,8 @@ def question5(liste1, liste2):
     ######## Hexadecimal #######
     s1=0
     s2=0
+    s=0
+    liste=liste1+liste2
     for i in range(len(liste1)):
         s1+=(liste1[-1-i]*(2**i))
     if s1==10:
@@ -327,8 +331,81 @@ def question5(liste1, liste2):
         s2="F"
     print(s2)
     ############# ACSII ############
+    for i in range(len(liste)):
+        s+=(liste[-1-i]*(2**i))
+    if 64<s<191:
+        s=ascii_uppercase[s-64]
+    elif 190<s<123:
+        s=ascii_lowercase[s-191]
+    print(s)
 
-question5(code_Hamming(liste_essay1), code_Hamming(liste_essay2))   
+################ QUESTION 6 ################
+def filtre_00(mat):
+    mat_00=[[0]*14]*16
+    for i in range(9,25):
+        for j in range(11,25):
+            mat[i][j]=mat[i][j]^mat_00[i-9][j-11]
+            modify(mat)
+
+mat_01=[[1]*14 for k in range(16)]
+for i in range(nbrLig(mat_01)):
+    for j in range(nbrCol(mat_01)):
+        if i%2==0 and j%2==0:
+            mat_01[i][j]=0
+        if i%2==1 and j%2==1:
+            mat_01[i][j]=0
+
+def filtre_01(mat):
+    for i in range(nbrLig(mat_01)):
+        for j in range(nbrCol(mat_01)):
+            mat[i+9][j+11]=mat[i+9][j+11]^mat_01[i][j]
+            modify(mat)
+        
+
+mat_10=[[1]*14 for k in range(16)]
+for i in range(nbrLig(mat_10)):
+    for j in range(nbrCol(mat_10)):
+        if i%2==0:
+            mat_10[i][j]=0
+
+def filtre_10(mat):
+    for i in range(nbrLig(mat_10)):
+            for j in range(nbrCol(mat_10)):
+                mat[i][j]=mat[i][j]^mat_10[i][j]
+                modify(mat)
+
+mat_11=[[1]*14 for k in range(16)]
+for i in range(nbrLig(mat_11)):
+    for j in range(nbrCol(mat_11)):
+        if j%2==0:
+            mat_11[i][j]=0
+        
+def filtre_11(mat):
+    for i in range(nbrLig(mat_11)):
+            for j in range(nbrCol(mat_11)):
+                mat[i+9][j+11]=mat[i+9][j+11]^mat_11[i][j]
+                modify(mat)
+
+
+def filtre(mat):
+    mat= mat_charger
+    if (1-mat_charger[22][8])==0:
+        print(1-mat_charger[22][8])
+        if (1-mat_charger[23][8])==0:
+            print(1-mat_charger[23][8])
+            filtre_00(mat_charger)
+        else:
+            print(1-mat_charger[23][8])
+            filtre_01(mat_charger)
+    else:
+        print(1-mat_charger[22][8])
+        if (1-mat_charger[23][8])==0:
+            print(1-mat_charger[23][8])
+            filtre_10(mat_charger)
+        else:
+            print(1-mat_charger[23][8])
+            filtre_11(mat_charger)
+
 
 ################
 # Tkinter
@@ -339,8 +416,12 @@ racine = tk.Tk()
 Bouton_charger=tk.Button(racine, text="charger", command=lambda: charger(racine))
 Bouton_charger.grid(row=5,column=1)
 
-Bouton_comparer=tk.Button(racine, text="comparer", command=lambda: lecture_1_bloc(0, 0))
+Bouton_comparer=tk.Button(racine, text="comparer", command=lambda: question5(code_Hamming(lecture_1_bloc(0,0)[0]), code_Hamming(lecture_1_bloc(0,0)[1])))
 Bouton_comparer.grid(row=5,column=2)
+
+Bouton_filtre=tk.Button(racine, text="filtre", command=lambda: filtre(mat_charger))
+Bouton_filtre.grid(row=6, column=1)
+
 #regarde_coin_25(mat_charger)
 
 
