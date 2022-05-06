@@ -11,7 +11,6 @@ from PIL import ImageTk
 import tkinter as tk
 import random as rd
 from tkinter import filedialog
-from string import ascii_letters, ascii_lowercase, ascii_uppercase
 
 def saving(matPix, filename):#sauvegarde l'image contenue dans matpix dans le fichier filename
 							 #utiliser une extension png pour que la fonction fonctionne sans perte d'information
@@ -235,6 +234,7 @@ def rotation_multiple(matrice,nbr_rotation):
     while nbr_rotation != 0:
         mat = rotation(mat)
         nbr_rotation -= 1
+    modify(mat)
     return mat
 
 def rotation(matrice):
@@ -300,44 +300,44 @@ def question5(liste1, liste2):
     s2=0
     s=0
     liste=liste1+liste2
-    for i in range(len(liste1)):
-        s1+=(liste1[-1-i]*(2**i))
-    if s1==10:
-        s1="A"
-    if s1==11:
-        s1="B"
-    if s1==12:
-        s1="C"
-    if s1==13:
-        s1="D"
-    if s1==14:
-        s1="E"
-    if s1==15:
-        s1="F"
-    print(s1)
-    for i in range(len(liste2)):
-        s2+=(liste2[-1-i]*(2**i))
-    if s2==10:
-        s2="A"
-    if s2==11:
-        s2="B"
-    if s2==12:
-        s2="C"
-    if s2==13:
-        s2="D"
-    if s2==14:
-        s2="E"
-    if s2==15:
-        s2="F"
-    print(s2)
-    ############# ACSII ############
-    for i in range(len(liste)):
-        s+=(liste[-1-i]*(2**i))
-    if 64<s<191:
-        s=ascii_uppercase[s-64]
-    elif 190<s<123:
-        s=ascii_lowercase[s-191]
-    print(s)
+    print(mat_charger[24][8])
+    if mat_charger[24][8]==1:
+        for i in range(len(liste1)):
+            s1+=(liste1[-1-i]*(2**i))
+        if s1==10:
+            s1="A"
+        if s1==11:
+            s1="B"
+        if s1==12:
+            s1="C"
+        if s1==13:
+            s1="D"
+        if s1==14:
+            s1="E"
+        if s1==15:
+            s1="F"
+        print(s1)
+        for i in range(len(liste2)):
+            s2+=(liste2[-1-i]*(2**i))
+        if s2==10:
+            s2="A"
+        if s2==11:
+            s2="B"
+        if s2==12:
+            s2="C"
+        if s2==13:
+            s2="D"
+        if s2==14:
+            s2="E"
+        if s2==15:
+            s2="F"
+        print(s2)
+    ############# ASCII ############
+    else:
+        for i in range(len(liste)):
+            s+=(liste[-1-i]*(2**i))
+        s=chr(s)
+        print(s)
 
 ################ QUESTION 6 ################
 def filtre_00(mat):
@@ -421,6 +421,9 @@ Bouton_comparer.grid(row=5,column=2)
 
 Bouton_filtre=tk.Button(racine, text="filtre", command=lambda: filtre(mat_charger))
 Bouton_filtre.grid(row=6, column=1)
+
+Bouton_rotation=tk.Button(racine, text="rotation", command=lambda: rotation_multiple(mat_charger,regarde_coin_25(mat_charger)))
+Bouton_rotation.grid(row=5, column=3)
 
 #regarde_coin_25(mat_charger)
 
