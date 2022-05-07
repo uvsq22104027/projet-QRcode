@@ -291,15 +291,36 @@ def code_Hamming(liste):
 
 res = [[],[]]
 
-
-def lecture_1_bloc(x, y):
+def extraction_1_bloc(x,y):
     "lit un morceau de la matrice charger de 2/14 et retourne les données brutes"
     global res
     for i in range(2):
         for j in range(7):
             res[i].append(mat_charger[x+i][y+j])
-    print(res)
     return res
+
+def lecture_1_bloc(x, y):
+    extraction_1_bloc(x,y)
+    print(extraction_1_bloc(x,y))
+
+    mat = [[],[]]
+    """
+    1 : 1        ...       14   premiere lettre
+    2 : 1        ...       14   2eme lettre
+
+    2, 14
+    1, 14
+    2, 13
+    1, 13
+    """
+    """for i in range(14,0):
+        j = 2
+        k = 1
+        mat[j].append  """
+    
+    return mat
+
+    
 
 ############### QUESTION 5 ##################
 def question5(liste1, liste2):
