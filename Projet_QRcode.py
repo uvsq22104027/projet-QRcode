@@ -76,6 +76,7 @@ def modify(matrice):
     imgModif=ImageTk.PhotoImage(file="modif.png")
     canvas.itemconfigure(dessin, image=imgModif)
     nomImgCourante="modif.png"
+    return imgModif
 
 
 def nbrCol(matrice):
@@ -119,8 +120,6 @@ a=[]
 def comparaison_coin(matrice_a_comparer, x, y):
     "Compare une matrice à partire des position x et y avec la matrice coin, retourne True si pareil, faux si différent"
     global a
-    # doit regarder pr chaque ij de mat_a_comp si == a mat_coin
-    #if x>=len(matrice_a_comparer)-7 or y>=len(matrice_a_comparer)-7:
     if 1!=1:
         # si pas la place (trop en bas ou trop a doite)
         return False
@@ -214,19 +213,27 @@ def regarde_coin_25(matrice):
     coin_bas_gauche = comparaison_coin(mat_bg,0,0)
     coin_bas_droite = comparaison_coin(mat_bd,0,0)
     if not(coin_bas_droite) :
-        print("0")
         return 0
     elif not(coin_bas_gauche) :
-        print("3")
         return 3
     elif not(coin_haut_droite) :
-        print("1")
         return 1
     elif not(coin_haut_gauche) :
-        print("2")
         return 2
     else :
         print("pblm")
+
+def inverse_pour_modify(matrice):
+    "transphorme les 1 en 0 et les 0 en 1"
+    mat = []
+    for i in range(len(matrice)):
+        mat.append([])
+        for j in range(len(matrice)):
+            if matrice[i][j]==1:
+                mat[i].append(0)
+            else :
+                mat[i].append(1)
+    return mat
 
 def rotation_multiple(matrice,nbr_rotation):
     "appel plusieurs fois rotation"
@@ -234,7 +241,7 @@ def rotation_multiple(matrice,nbr_rotation):
     while nbr_rotation != 0:
         mat = rotation(mat)
         nbr_rotation -= 1
-    modify(mat)
+    modify(inverse_pour_modify(mat))
     return mat
 
 def rotation(matrice):
@@ -245,7 +252,6 @@ def rotation(matrice):
         matrice_tourne.append([])
         for j in range(nbrLig(matrice)):
             matrice_tourne[i].append([])
-
     # tourne 1 fois à droite
     for i in range(nbrLig(matrice)):
         for j in range(nbrCol(matrice)):
@@ -284,6 +290,8 @@ def code_Hamming(liste):
 ############### QUESTION 4 ##################
 
 res = [[],[]]
+
+
 def lecture_1_bloc(x, y):
     "lit un morceau de la matrice charger de 2/14 et retourne les données brutes"
     global res
@@ -423,9 +431,8 @@ Bouton_filtre=tk.Button(racine, text="filtre", command=lambda: filtre(mat_charge
 Bouton_filtre.grid(row=6, column=1)
 
 Bouton_rotation=tk.Button(racine, text="rotation", command=lambda: rotation_multiple(mat_charger,regarde_coin_25(mat_charger)))
+#Bouton_rotation=tk.Button(racine, text="rotation", command=lambda: inverse_pour_modify(mat_charger))
 Bouton_rotation.grid(row=5, column=3)
-
-#regarde_coin_25(mat_charger)
 
 
 
