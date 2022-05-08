@@ -317,6 +317,20 @@ def lecture_1_bloc(x, y):
         j = 2
         k = 1
         mat[j].append  """
+        
+    #Astrid
+    """    mat = [[2,2,2,2,2,2,2],[2,2,2,2,2,2,2]]
+    for j in range(7):   
+        for k in range(1,3):
+            if j==0:
+                mat[0][j]=res[(k+1)%2][-1]
+                mat[1][j]=res[k%2][-4]
+                print(-1)
+            else:
+                mat[0][j]=res[(k+1)%2][-j-k]
+                mat[1][j]=res[k%2][-j-k]
+                print(-j-k)
+                print("")"""
     
     return mat
 
@@ -430,6 +444,7 @@ def filtre(mat):
         else:
             filtre_11(mat_charger)
 
+#question5(code_Hamming(lecture_1_bloc(0,0)[0]), code_Hamming(lecture_1_bloc(0,0)[1])))
 
 ################
 # Tkinter
