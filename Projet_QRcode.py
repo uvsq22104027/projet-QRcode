@@ -374,7 +374,7 @@ def filtre_00(mat):
     for i in range(9,25):
         for j in range(11,25):
             mat[i][j]=mat[i][j]^mat_00[i-9][j-11]
-            modify(mat)
+            modify(inverse_pour_modify(mat))
 
 mat_01=[[1]*14 for k in range(16)]
 for i in range(nbrLig(mat_01)):
@@ -388,7 +388,7 @@ def filtre_01(mat):
     for i in range(nbrLig(mat_01)):
         for j in range(nbrCol(mat_01)):
             mat[i+9][j+11]=mat[i+9][j+11]^mat_01[i][j]
-            modify(mat)
+            modify(inverse_pour_modify(mat))
         
 
 mat_10=[[1]*14 for k in range(16)]
@@ -401,7 +401,7 @@ def filtre_10(mat):
     for i in range(nbrLig(mat_10)):
             for j in range(nbrCol(mat_10)):
                 mat[i][j]=mat[i][j]^mat_10[i][j]
-                modify(mat)
+                modify(inverse_pour_modify(mat))
 
 mat_11=[[1]*14 for k in range(16)]
 for i in range(nbrLig(mat_11)):
@@ -413,26 +413,21 @@ def filtre_11(mat):
     for i in range(nbrLig(mat_11)):
             for j in range(nbrCol(mat_11)):
                 mat[i+9][j+11]=mat[i+9][j+11]^mat_11[i][j]
-                modify(mat)
+                modify(inverse_pour_modify(mat))
 
 
 def filtre(mat):
     mat= mat_charger
     if (1-mat_charger[22][8])==0:
-        print(1-mat_charger[22][8])
         if (1-mat_charger[23][8])==0:
-            print(1-mat_charger[23][8])
             filtre_00(mat_charger)
         else:
-            print(1-mat_charger[23][8])
             filtre_01(mat_charger)
     else:
-        print(1-mat_charger[22][8])
         if (1-mat_charger[23][8])==0:
             print(1-mat_charger[23][8])
             filtre_10(mat_charger)
         else:
-            print(1-mat_charger[23][8])
             filtre_11(mat_charger)
 
 
