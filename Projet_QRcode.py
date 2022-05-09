@@ -299,40 +299,25 @@ def extraction_1_bloc(x,y):
             res[i].append(mat_charger[x+i][y+j])
     return res
 
+mat_lecture = [[2,2,2,2,2,2,2],[2,2,2,2,2,2,2]]
 def lecture_1_bloc(x, y):
+    global mat_lecture
     extraction_1_bloc(x,y)
-    print(extraction_1_bloc(x,y))
+    k=0
+    for j in range(7):
+        if j%2==0:
+            mat_lecture[0][j]=res[(j+1)%2][-1-k]
+            mat_lecture[1][j]=res[j%2][-4-k]
+            k+=1
+        else:
+            k-=1
+            mat_lecture[0][j]=res[(j+1)%2][-1-k]
+            k+=1
+            mat_lecture[1][j]=res[j%2][-4-k]
+    mat_lecture[0][6]=res[1][3]
+    mat_lecture[1][6]=res[0][0] 
 
-    mat = [[],[]]
-    """
-    1 : 1        ...       14   premiere lettre
-    2 : 1        ...       14   2eme lettre
-
-    2, 14
-    1, 14
-    2, 13
-    1, 13
-    """
-    """for i in range(14,0):
-        j = 2
-        k = 1
-        mat[j].append  """
-        
-    #Astrid
-    """    mat = [[2,2,2,2,2,2,2],[2,2,2,2,2,2,2]]
-    for j in range(7):   
-        for k in range(1,3):
-            if j==0:
-                mat[0][j]=res[(k+1)%2][-1]
-                mat[1][j]=res[k%2][-4]
-                print(-1)
-            else:
-                mat[0][j]=res[(k+1)%2][-j-k]
-                mat[1][j]=res[k%2][-j-k]
-                print(-j-k)
-                print("")"""
-    
-    return mat
+    return mat_lecture
 
     
 
@@ -343,7 +328,6 @@ def question5(liste1, liste2):
     s2=0
     s=0
     liste=liste1+liste2
-    print(mat_charger[24][8])
     if mat_charger[24][8]==1:
         for i in range(len(liste1)):
             s1+=(liste1[-1-i]*(2**i))
