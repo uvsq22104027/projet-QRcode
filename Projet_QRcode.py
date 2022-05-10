@@ -237,11 +237,15 @@ def inverse_pour_modify(matrice):
 
 def rotation_multiple(matrice,nbr_rotation):
     "appel plusieurs fois rotation"
+    global mat_charger
     mat=matrice
     while nbr_rotation != 0:
         mat = rotation(mat)
         nbr_rotation -= 1
     modify(inverse_pour_modify(mat))
+    mat_charger = []
+    for i in range(len(mat)):
+        mat_charger.append(mat[i])
     return mat
 
 def rotation(matrice):
@@ -299,37 +303,62 @@ def extraction_1_bloc(x,y):
             res[i].append(mat_charger[x+i][y+j])
     return res
 
-def lecture_1_bloc(x, y):
+mat_lecture = [[2,2,2,2,2,2,2],[2,2,2,2,2,2,2]]
+mat_lecture = [[2,2,2,2,2,2,2],[2,2,2,2,2,2,2]]
+def lecture_1_bloc_de_droite_a_gauche(x, y):
+    global mat_lecture
     extraction_1_bloc(x,y)
-    print(extraction_1_bloc(x,y))
+    k=0
+    for j in range(7):
+        if j%2==0:
+            mat_lecture[0][j]=res[(j+1)%2][-1-k]
+            mat_lecture[1][j]=res[j%2][-4-k]
+            k+=1
+        else:
+            k-=1
+            mat_lecture[0][j]=res[(j+1)%2][-1-k]
+            k+=1
+            mat_lecture[1][j]=res[j%2][-4-k]
+    mat_lecture[0][6]=res[1][3]
+    mat_lecture[1][6]=res[0][0] 
 
-    mat = [[],[]]
-    """
-    1 : 1        ...       14   premiere lettre
-    2 : 1        ...       14   2eme lettre
+    return mat_lecture
 
-    2, 14
-    1, 14
-    2, 13
-    1, 13
-    """
-    """for i in range(14,0):
-        j = 2
-        k = 1
-        mat[j].append  """
-    
-    return mat
+def lecture_1_bloc_de_gauche_a_droite(x, y):
+    global mat_lecture
+    extraction_1_bloc(x, y)
+    k=0
+    for j in range(7):
+        if j%2==0:
+            mat_lecture[0][j]=res[(j+1)%2][k]
+            mat_lecture[1][j]=res[j%2][3+k]
+            k+=1
+        else:
+            k-=1
+            mat_lecture[0][j]=res[(j+1)%2][k]
+            k+=1
+            mat_lecture[1][j]=res[j%2][3+k]
+    mat_lecture[0][6]=res[1][3]
+    mat_lecture[1][6]=res[0][6] 
+
+    return mat_lecture
+
+def lecture_1_bloc(x, y):
+    if x==10 or x==14 or x==18 or x==22:
+        return lecture_1_bloc_de_droite_a_gauche(x,y)
+    else:
+        return lecture_1_bloc_de_gauche_a_droite(x,y)
 
     
 
 ############### QUESTION 5 ##################
 def question5(liste1, liste2):
     ######## Hexadecimal #######
+    print("ok")
     s1=0
     s2=0
     s=0
     liste=liste1+liste2
-    print(mat_charger[24][8])
     if mat_charger[24][8]==1:
         for i in range(len(liste1)):
             s1+=(liste1[-1-i]*(2**i))
@@ -365,6 +394,7 @@ def question5(liste1, liste2):
     else:
         for i in range(len(liste)):
             s+=(liste[-1-i]*(2**i))
+        print(s)
         s=chr(s)
         print(s)
 
@@ -374,7 +404,7 @@ def filtre_00(mat):
     for i in range(9,25):
         for j in range(11,25):
             mat[i][j]=mat[i][j]^mat_00[i-9][j-11]
-            modify(mat)
+            modify(inverse_pour_modify(mat))
 
 mat_01=[[1]*14 for k in range(16)]
 for i in range(nbrLig(mat_01)):
@@ -388,7 +418,7 @@ def filtre_01(mat):
     for i in range(nbrLig(mat_01)):
         for j in range(nbrCol(mat_01)):
             mat[i+9][j+11]=mat[i+9][j+11]^mat_01[i][j]
-            modify(mat)
+            modify(inverse_pour_modify(mat))
         
 
 mat_10=[[1]*14 for k in range(16)]
@@ -401,7 +431,7 @@ def filtre_10(mat):
     for i in range(nbrLig(mat_10)):
             for j in range(nbrCol(mat_10)):
                 mat[i][j]=mat[i][j]^mat_10[i][j]
-                modify(mat)
+                modify(inverse_pour_modify(mat))
 
 mat_11=[[1]*14 for k in range(16)]
 for i in range(nbrLig(mat_11)):
@@ -413,28 +443,24 @@ def filtre_11(mat):
     for i in range(nbrLig(mat_11)):
             for j in range(nbrCol(mat_11)):
                 mat[i+9][j+11]=mat[i+9][j+11]^mat_11[i][j]
-                modify(mat)
+                modify(inverse_pour_modify(mat))
 
 
 def filtre(mat):
     mat= mat_charger
     if (1-mat_charger[22][8])==0:
-        print(1-mat_charger[22][8])
         if (1-mat_charger[23][8])==0:
-            print(1-mat_charger[23][8])
             filtre_00(mat_charger)
         else:
-            print(1-mat_charger[23][8])
             filtre_01(mat_charger)
     else:
-        print(1-mat_charger[22][8])
         if (1-mat_charger[23][8])==0:
             print(1-mat_charger[23][8])
             filtre_10(mat_charger)
         else:
-            print(1-mat_charger[23][8])
             filtre_11(mat_charger)
 
+#question5(code_Hamming(lecture_1_bloc(0,0)[0]), code_Hamming(lecture_1_bloc(0,0)[1])))
 
 ################
 # Tkinter
@@ -445,16 +471,15 @@ racine = tk.Tk()
 Bouton_charger=tk.Button(racine, text="charger", command=lambda: charger(racine))
 Bouton_charger.grid(row=5,column=1)
 
-Bouton_comparer=tk.Button(racine, text="comparer", command=lambda: question5(code_Hamming(lecture_1_bloc(0,0)[0]), code_Hamming(lecture_1_bloc(0,0)[1])))
+Bouton_comparer=tk.Button(racine, text="comparer", command=lambda: question5(code_Hamming(lecture_1_bloc(16,17)[0]), code_Hamming(lecture_1_bloc(18,17)[1])))
 Bouton_comparer.grid(row=5,column=2)
 
 Bouton_filtre=tk.Button(racine, text="filtre", command=lambda: filtre(mat_charger))
 Bouton_filtre.grid(row=6, column=1)
 
 Bouton_rotation=tk.Button(racine, text="rotation", command=lambda: rotation_multiple(mat_charger,regarde_coin_25(mat_charger)))
-#Bouton_rotation=tk.Button(racine, text="rotation", command=lambda: inverse_pour_modify(mat_charger))
+#Bouton_rotation=tk.Button(racine, text="rotation", command=lambda: extraction_1_bloc(25-2,25-7))
 Bouton_rotation.grid(row=5, column=3)
-
 
 
 racine.mainloop()
