@@ -300,7 +300,8 @@ def extraction_1_bloc(x,y):
     return res
 
 mat_lecture = [[2,2,2,2,2,2,2],[2,2,2,2,2,2,2]]
-def lecture_1_bloc(x, y):
+mat_lecture = [[2,2,2,2,2,2,2],[2,2,2,2,2,2,2]]
+def lecture_1_bloc_de_droite_a_gauche(x, y):
     global mat_lecture
     extraction_1_bloc(x,y)
     k=0
@@ -318,6 +319,31 @@ def lecture_1_bloc(x, y):
     mat_lecture[1][6]=res[0][0] 
 
     return mat_lecture
+
+def lecture_1_bloc_de_gauche_a_droite(x, y):
+    global mat_lecture
+    extraction_1_bloc(x, y)
+    k=0
+    for j in range(7):
+        if j%2==0:
+            mat_lecture[0][j]=res[(j+1)%2][k]
+            mat_lecture[1][j]=res[j%2][3+k]
+            k+=1
+        else:
+            k-=1
+            mat_lecture[0][j]=res[(j+1)%2][k]
+            k+=1
+            mat_lecture[1][j]=res[j%2][3+k]
+    mat_lecture[0][6]=res[1][3]
+    mat_lecture[1][6]=res[0][6] 
+
+    return mat_lecture
+
+def lecture_1_bloc(x, y):
+    if x==10 or x==14 or x==18 or x==22:
+        return lecture_1_bloc_de_droite_a_gauche(x,y)
+    else:
+        return lecture_1_bloc_de_gauche_a_droite(x,y)
 
     
 
@@ -439,7 +465,7 @@ racine = tk.Tk()
 Bouton_charger=tk.Button(racine, text="charger", command=lambda: charger(racine))
 Bouton_charger.grid(row=5,column=1)
 
-Bouton_comparer=tk.Button(racine, text="comparer", command=lambda: question5(code_Hamming(lecture_1_bloc(0,0)[0]), code_Hamming(lecture_1_bloc(0,0)[1])))
+Bouton_comparer=tk.Button(racine, text="comparer", command=lambda: question5(code_Hamming(lecture_1_bloc(16,17)[0]), code_Hamming(lecture_1_bloc(18,17)[1])))
 Bouton_comparer.grid(row=5,column=2)
 
 Bouton_filtre=tk.Button(racine, text="filtre", command=lambda: filtre(mat_charger))
