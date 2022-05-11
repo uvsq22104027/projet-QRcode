@@ -78,7 +78,6 @@ def modify(matrice):
     nomImgCourante="modif.png"
     return imgModif
 
-
 def nbrCol(matrice):
     return(len(matrice[0]))
 
@@ -467,7 +466,7 @@ def filtre(mat):
 def lecture_nmbr_bloc():
     """lit de (13,0) a (17,0) pour déterminer le nombre de bloc à lire (res)"""
     res = 0
-    for i in range(17-13):
+    for i in range(4):
         res += mat_charger[13+i][0]
     return res
 
