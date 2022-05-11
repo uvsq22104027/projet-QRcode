@@ -463,12 +463,27 @@ def filtre(mat):
 
 ################ QUESTION 7 ################
 
+#Elisabeth
 def lecture_nmbr_bloc():
     """lit de (13,0) a (17,0) pour déterminer le nombre de bloc à lire (res)"""
     res = 0
-    for i in range(4):
+    for i in range(5):
         res += mat_charger[13+i][0]
     return res
+
+#Astrid
+def lecture_nmbr_bloc():
+    """lit de (13,0) a (17,0) pour déterminer le nombre de bloc à lire (res)"""
+    res = []
+    s=0
+    for i in range(5):
+        res.append(mat_charger[13+i][0])
+        print(res)
+    if len(res)==5:
+        for i in range(len(res)):
+            s+=(res[i]*(2**i))
+
+    return s
 
 ################
 # Tkinter
