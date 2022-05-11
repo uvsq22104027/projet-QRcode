@@ -485,8 +485,8 @@ Bouton_comparer.grid(row=5,column=2)
 Bouton_filtre=tk.Button(racine, text="filtre", command=lambda: filtre(mat_charger))
 Bouton_filtre.grid(row=6, column=1)
 
-#Bouton_rotation=tk.Button(racine, text="rotation", command=lambda: rotation_multiple(mat_charger,regarde_coin_25(mat_charger)))
-Bouton_rotation=tk.Button(racine, text="rotation", command=lambda: lecture_nmbr_bloc())
+Bouton_rotation=tk.Button(racine, text="rotation", command=lambda: rotation_multiple(mat_charger,regarde_coin_25(mat_charger)))
+#Bouton_rotation=tk.Button(racine, text="rotation", command=lambda: lecture_nmbr_bloc())
 Bouton_rotation.grid(row=5, column=3)
 
 
