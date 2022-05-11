@@ -462,6 +462,15 @@ def filtre(mat):
 
 #question5(code_Hamming(lecture_1_bloc(0,0)[0]), code_Hamming(lecture_1_bloc(0,0)[1])))
 
+################ QUESTION 7 ################
+
+def lecture_nmbr_bloc():
+    """lit de (13,0) a (17,0) pour déterminer le nombre de bloc à lire (res)"""
+    res = 0
+    for i in range(17-13):
+        res += mat_charger[13+i][0]
+    return res
+
 ################
 # Tkinter
 
@@ -477,8 +486,8 @@ Bouton_comparer.grid(row=5,column=2)
 Bouton_filtre=tk.Button(racine, text="filtre", command=lambda: filtre(mat_charger))
 Bouton_filtre.grid(row=6, column=1)
 
-Bouton_rotation=tk.Button(racine, text="rotation", command=lambda: rotation_multiple(mat_charger,regarde_coin_25(mat_charger)))
-#Bouton_rotation=tk.Button(racine, text="rotation", command=lambda: extraction_1_bloc(25-2,25-7))
+#Bouton_rotation=tk.Button(racine, text="rotation", command=lambda: rotation_multiple(mat_charger,regarde_coin_25(mat_charger)))
+Bouton_rotation=tk.Button(racine, text="rotation", command=lambda: lecture_nmbr_bloc())
 Bouton_rotation.grid(row=5, column=3)
 
 
