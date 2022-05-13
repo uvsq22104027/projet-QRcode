@@ -78,6 +78,7 @@ def modify(matrice):
     nomImgCourante="modif.png"
     return imgModif
 
+
 def nbrCol(matrice):
     return(len(matrice[0]))
 
@@ -242,9 +243,7 @@ def rotation_multiple(matrice,nbr_rotation):
         mat = rotation(mat)
         nbr_rotation -= 1
     modify(inverse_pour_modify(mat))
-    mat_charger = []
-    for i in range(len(mat)):
-        mat_charger.append(mat[i])
+    mat_charger=mat
     return mat
 
 def rotation(matrice):
@@ -265,14 +264,14 @@ def rotation(matrice):
 ############### QUESTION 3 ###################################@
 def code_Hamming(liste):
     l=[]
-    c1=liste[0]+liste[1]+liste[3]
-    c2=liste[0]+liste[2]+liste[3]
-    c3=liste[1]+liste[2]+liste[3]
-    if c1!=liste[4] and c2!=liste[5] and c3==liste[6]:
+    c1=(liste[0]+liste[1]+liste[3])%2
+    c2=(liste[0]+liste[2]+liste[3])%2
+    c3=(liste[1]+liste[2]+liste[3])%2
+    if (c1!=liste[4] and c2!=liste[5] and c3==liste[6]):
         liste[0]=(liste[0]+1)%2
-    if c1!=liste[4] and c3!=liste[6] and c2==liste[5]:
+    if (c1!=liste[4] and c3!=liste[6]) and c2==liste[5]:
         liste[1]=(liste[1]+1)%2
-    if c2!=liste[5] and c3!=liste[6] and c1==liste[4]:
+    if (c2!=liste[5] and c3!=liste[6]) and c1==liste[4]:
         liste[2]=(liste[2]+1)%2
     if c2!=liste[5] and c3!=liste[6] and c1!=liste[4]:
         liste[3]=(liste[3]+1)%2
@@ -297,12 +296,12 @@ res = [[],[]]
 def extraction_1_bloc(x,y):
     "lit un morceau de la matrice charger de 2/14 et retourne les données brutes"
     global res
+    res = [[],[]]
     for i in range(2):
         for j in range(7):
             res[i].append(mat_charger[x+i][y+j])
     return res
 
-mat_lecture = [[2,2,2,2,2,2,2],[2,2,2,2,2,2,2]]
 mat_lecture = [[2,2,2,2,2,2,2],[2,2,2,2,2,2,2]]
 def lecture_1_bloc_de_droite_a_gauche(x, y):
     global mat_lecture
@@ -343,24 +342,36 @@ def lecture_1_bloc_de_gauche_a_droite(x, y):
     return mat_lecture
 
 def lecture_1_bloc(x, y):
-    if x==10 or x==14 or x==18 or x==22:
+    if x==11 or x==15 or x==19 or x==23:
         return lecture_1_bloc_de_droite_a_gauche(x,y)
     else:
         return lecture_1_bloc_de_gauche_a_droite(x,y)
 
-    
+def lire():
+    x=23
+    y=18
+    for i in range(lecture_nmbr_bloc()):
+        if i==0 or i==4 or i==8 or i==12 or i==16:
+            question5(code_Hamming(lecture_1_bloc(x-i,y)[0]), code_Hamming(lecture_1_bloc(x-i,y)[1]))
+        if i==1 or i==5 or i==9 or i==13:
+            question5(code_Hamming(lecture_1_bloc(x-i+1,y-7)[0]), code_Hamming(lecture_1_bloc(x-i+1,y-7)[1]))
+        if i==2 or i==6 or i==10 or i==14: 
+            question5(code_Hamming(lecture_1_bloc(x-i,y-7)[0]), code_Hamming(lecture_1_bloc(x-i,y-7)[1]))
+        if i==3 or i==7 or i==11 or i==15:
+            question5(code_Hamming(lecture_1_bloc(x-i+1,y)[0]), code_Hamming(lecture_1_bloc(x-i+1,y)[1]))
+
+
 
 ############### QUESTION 5 ##################
 def question5(liste1, liste2):
     ######## Hexadecimal #######
-    print("ok")
     s1=0
     s2=0
     s=0
     liste=liste1+liste2
     if mat_charger[24][8]==1:
         for i in range(len(liste1)):
-            s1+=(liste1[-1-i]*(2**i))
+            s1+=(liste1[-i-1]*(2**i))
         if s1==10:
             s1="A"
         if s1==11:
@@ -375,7 +386,7 @@ def question5(liste1, liste2):
             s1="F"
         print(s1)
         for i in range(len(liste2)):
-            s2+=(liste2[-1-i]*(2**i))
+            s2+=(liste2[-i-1]*(2**i))
         if s2==10:
             s2="A"
         if s2==11:
@@ -392,8 +403,7 @@ def question5(liste1, liste2):
     ############# ASCII ############
     else:
         for i in range(len(liste)):
-            s+=(liste[-1-i]*(2**i))
-        print(s)
+            s+=(liste[-i-1]*(2**i))
         s=chr(s)
         print(s)
 
@@ -459,31 +469,21 @@ def filtre(mat):
         else:
             filtre_11(mat_charger)
 
-#question5(code_Hamming(lecture_1_bloc(0,0)[0]), code_Hamming(lecture_1_bloc(0,0)[1])))
-
 ################ QUESTION 7 ################
 
-#Elisabeth
-def lecture_nmbr_bloc():
-    """lit de (13,0) a (17,0) pour déterminer le nombre de bloc à lire (res)"""
-    res = 0
-    for i in range(5):
-        res += mat_charger[13+i][0]
-    return res
-
-#Astrid
 def lecture_nmbr_bloc():
     """lit de (13,0) a (17,0) pour déterminer le nombre de bloc à lire (res)"""
     res = []
     s=0
     for i in range(5):
         res.append(mat_charger[13+i][0])
-        print(res)
     if len(res)==5:
         for i in range(len(res)):
             s+=(res[i]*(2**i))
 
     return s
+
+#question5(code_Hamming(lecture_2_blocs(20,10)[0]), code_Hamming(lecture_2_blocs(20,10)[1])))
 
 ################
 # Tkinter
@@ -494,15 +494,16 @@ racine = tk.Tk()
 Bouton_charger=tk.Button(racine, text="charger", command=lambda: charger(racine))
 Bouton_charger.grid(row=5,column=1)
 
-Bouton_comparer=tk.Button(racine, text="comparer", command=lambda: question5(code_Hamming(lecture_1_bloc(16,17)[0]), code_Hamming(lecture_1_bloc(18,17)[1])))
-Bouton_comparer.grid(row=5,column=2)
+Bouton_lire=tk.Button(racine, text="lire", command=lambda: lire())
+Bouton_lire.grid(row=5,column=2)
 
 Bouton_filtre=tk.Button(racine, text="filtre", command=lambda: filtre(mat_charger))
 Bouton_filtre.grid(row=6, column=1)
 
 Bouton_rotation=tk.Button(racine, text="rotation", command=lambda: rotation_multiple(mat_charger,regarde_coin_25(mat_charger)))
-#Bouton_rotation=tk.Button(racine, text="rotation", command=lambda: lecture_nmbr_bloc())
+#Bouton_rotation=tk.Button(racine, text="rotation", command=lambda: inverse_pour_modify(mat_charger))
 Bouton_rotation.grid(row=5, column=3)
+
 
 
 racine.mainloop()
