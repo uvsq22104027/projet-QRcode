@@ -112,16 +112,7 @@ for i in range(8):
         else:
             mat_carre[i][j] = 1
 
-## Question 2
-# Création et remplissage de la matrice pointiller entre les coins (mat_carre)
-mat_ligne = []
-for i in range(9):
-    if i % 2 == 0:
-        mat_ligne.append(1)
-    elif i % 2 == 1:
-        mat_ligne.append(0)
-
-# Comparaison d'une matrice de 8x8 avec la matrice coin
+# Comparaison avec la matrice ligne
 
 
 def comparaison_coin(matrice_a_comparer, x, y):
@@ -139,9 +130,6 @@ def comparaison_coin(matrice_a_comparer, x, y):
         return False
 
 
-# // matrice pointiller
-
-
 def recup_coin(matrice, x, y):
     "fonction secondaire pour regarde_coin_25, recupere un morceau d'une matrice de la taille d'un coin"
     res = [[] for i in range(8)]
@@ -151,7 +139,20 @@ def recup_coin(matrice, x, y):
     return res
 
 
+## Question 2
+# Création et remplissage de la matrice pointiller entre les coins (mat_carre)
+
+mat_ligne = []
+for i in range(9):
+    if i % 2 == 0:
+        mat_ligne.append(1)
+    elif i % 2 == 1:
+        mat_ligne.append(0)
+
+# Comparaison avec la matrice ligne
+
 def extraction_ligne(matrice, x, y, sens):
+    "extrais d'une matrice une matrice de ligne"
     res = []
     if sens == "h" :
         for i in range(len(mat_ligne)):
@@ -268,7 +269,7 @@ def code_Hamming(liste):
     return res
 
 ############### QUESTION 4 ##################
-
+# J
 
 res = [[], []]
 
@@ -302,7 +303,7 @@ def lecture_1_bloc_de_droite_a_gauche(x, y):
             mat_lecture[1][j] = res[j % 2][-4-k]
     mat_lecture[0][6] = res[1][3]
     mat_lecture[1][6] = res[0][0]
-
+    print(mat_lecture)
     return mat_lecture
 
 
@@ -372,7 +373,7 @@ def question5(liste1, liste2):
         if s1 == 15:
             s1 = "F"
         print(s1)
-        message += s1
+        message += str(s1)#str manger
         for i in range(len(liste2)):
             s2 += (liste2[-i-1]*(2**i))
         if s2 == 10:
@@ -388,14 +389,17 @@ def question5(liste1, liste2):
         if s2 == 15:
             s2 = "F"
         print(s2)
-        message += s2
+        message += str(s2) #str manger
     ############# ASCII ############
     else:
-        for i in range(len(liste)):
-            s += (liste[-i-1]*(2**i))
+        liste3 = []
+        for i in range(len(liste)-1):
+            liste3.append(liste[-i])
+        for i in range(len(liste3)):
+            s += (liste3[-i-1]*(2**i))
         s = chr(s)
-        print(s)
         message += s
+    print("message : ", message)
 
 
 ################ QUESTION 6 ################
