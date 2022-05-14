@@ -242,6 +242,7 @@ def rotation(matrice):
 
 
 def code_Hamming(liste):
+    #prend en compte les 7 erreures possibles et les modifies, et met dans un nouvelle liste les 4 bits d'informations
     res = []
     c1 = (liste[0]+liste[1]+liste[3]) % 2
     c2 = (liste[0]+liste[2]+liste[3]) % 2
@@ -286,8 +287,8 @@ def extraction_1_bloc(x, y):
 
 mat_lecture = [[2, 2, 2, 2, 2, 2, 2], [2, 2, 2, 2, 2, 2, 2]]
 
-
 def lecture_1_bloc_de_droite_a_gauche(x, y):
+    "récupere un bloc et remet dans un nouvelle liste les bits dans le bon ordre pour quand on veut lire le bloc de droite a gauche"
     global mat_lecture
     extraction_1_bloc(x, y)
     k = 0
@@ -307,7 +308,9 @@ def lecture_1_bloc_de_droite_a_gauche(x, y):
     return mat_lecture
 
 
+
 def lecture_1_bloc_de_gauche_a_droite(x, y):
+    "récupere un bloc et remet dans un nouvelle liste les bits dans le bon ordre pour quand on veut lire le bloc de gauche a droite"
     global mat_lecture
     extraction_1_bloc(x, y)
     k = 0
@@ -328,6 +331,7 @@ def lecture_1_bloc_de_gauche_a_droite(x, y):
 
 
 def lecture_1_bloc(x, y):
+    "lit un bloc de droite à gauche ou de gauche à droite en fonction de ou se trouve le bloc dans le QRcode"
     if x == 11 or x == 15 or x == 19 or x == 23:
         return lecture_1_bloc_de_droite_a_gauche(x, y)
     else:
@@ -335,6 +339,7 @@ def lecture_1_bloc(x, y):
 
 
 def decoder():
+    "lit le QRcode dans le sens demandé: prend le bloc de la fin puis lits les blocs à gauche, en haut, à droite, en haut,..."
     x = 23
     y = 18
     for i in range(lecture_nmbr_bloc()):
@@ -352,11 +357,12 @@ def decoder():
 
 def question5(liste1, liste2):
     global message
-    ######## Hexadecimal #######
     s1 = 0
     s2 = 0
     s = 0
     liste = liste1+liste2
+    ######## Hexadecimal #######
+    "lit la premiere partie du bloc et renvoie sa valeur en hexadecimal"
     if mat_charger[24][8] == 1:
         for i in range(len(liste1)):
             s1 += (liste1[-i-1]*(2**i))
@@ -374,6 +380,7 @@ def question5(liste1, liste2):
             s1 = "F"
         print(s1)
         message += str(s1)#str manger
+        "lit la deuxieme partie du bloc et renvoie sa valeur en hexadecimal"
         for i in range(len(liste2)):
             s2 += (liste2[-i-1]*(2**i))
         if s2 == 10:
@@ -391,6 +398,7 @@ def question5(liste1, liste2):
         print(s2)
         message += str(s2) #str manger
     ############# ASCII ############
+        "lit le bloc en entier et renvoie sa valeur en ascii"
     else:
         liste3 = []
         for i in range(len(liste)-1):
@@ -406,6 +414,7 @@ def question5(liste1, liste2):
 
 
 def filtre_00(mat):
+    "fait un xor entre la matrice 00 et la partie du QRcode auquel on applique le filtre"
     mat_00 = [[0]*14]*16
     for i in range(9, 25):
         for j in range(11, 25):
@@ -413,8 +422,9 @@ def filtre_00(mat):
             modify(inverse_pour_modify(mat))
 
 
-mat_01 = [[1]*14 for k in range(16)]
+"création de la matrice 01 (un damier dont la case en haut à gauche est noire"
 
+mat_01 = [[1]*14 for k in range(16)]
 
 for i in range(nbrLig(mat_01)):
     for j in range(nbrCol(mat_01)):
@@ -425,11 +435,13 @@ for i in range(nbrLig(mat_01)):
 
 
 def filtre_01(mat):
+    "fait un xor entre la matrice 01 et la partie du QRcode auquel on applique le filtre"
     for i in range(nbrLig(mat_01)):
         for j in range(nbrCol(mat_01)):
             mat[i+9][j+11] = mat[i+9][j+11] ^ mat_01[i][j]
             modify(inverse_pour_modify(mat))
 
+"création de la matrice 10 (des lignes horizontales altern ́ees noires et blanches, la plus haute  ́etant noire"
 
 mat_10 = [[1]*14 for k in range(16)]
 for i in range(nbrLig(mat_10)):
@@ -439,14 +451,15 @@ for i in range(nbrLig(mat_10)):
 
 
 def filtre_10(mat):
+    "fait un xor entre la matrice 10 et la partie du QRcode auquel on applique le filtre"
     for i in range(nbrLig(mat_10)):
         for j in range(nbrCol(mat_10)):
             mat[i][j] = mat[i][j] ^ mat_10[i][j]
             modify(inverse_pour_modify(mat))
 
+"création de la matrice 11 (des lignes verticales altern ́ees noires et blanches, la plus `a gauche  ́etant noire"
 
 mat_11 = [[1]*14 for k in range(16)]
-
 
 for i in range(nbrLig(mat_11)):
     for j in range(nbrCol(mat_11)):
@@ -455,6 +468,7 @@ for i in range(nbrLig(mat_11)):
 
 
 def filtre_11(mat):
+    "fait un xor entre la matrice 11 et la partie du QRcode auquel on applique le filtre"
     for i in range(nbrLig(mat_11)):
         for j in range(nbrCol(mat_11)):
             mat[i+9][j+11] = mat[i+9][j+11] ^ mat_11[i][j]
