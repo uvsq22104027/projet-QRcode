@@ -77,7 +77,10 @@ def modify(matrice):
 
 
 def nbrCol(matrice):
-    return(len(matrice[0]))
+    if type(matrice[0]) == int:
+        return(1)
+    else:
+        return(len(matrice[0]))
 
 
 def nbrLig(matrice):
@@ -118,91 +121,25 @@ for i in range(9):
     elif i % 2 == 1:
         mat_ligne.append(0)
 
-a = []
 # Comparaison d'une matrice de 8x8 avec la matrice coin
 
 
 def comparaison_coin(matrice_a_comparer, x, y):
     "Compare une matrice à partire des position x et y avec la matrice coin, retourne True si pareil, faux si différent"
-    global a
-    if 1 != 1:
-        # si pas la place (trop en bas ou trop a doite)
-        return False
+    cpt = 0
+    for i in range(len(mat_carre)):
+        for j in range(len(mat_carre)):
+            if matrice_a_comparer[x+i][y+j] == mat_carre[i][j]:
+                cpt += 1
+            else:
+                cpt += 0
+    if cpt == len(mat_carre)*len(mat_carre[0]):
+        return True
     else:
-        cpt = 0
-        for i in range(len(mat_carre)):
-            for j in range(len(mat_carre)):
-                mat = 2
-                if matrice_a_comparer[x+i][y+j] == 0:
-                    mat = 0
-                elif matrice_a_comparer[x+i][y+j] == 1:
-                    mat = 1
-                if mat == mat_carre[i][j]:
-                    cpt += 1
-                else:
-                    cpt += 0
-        if cpt == len(mat_carre)*len(mat_carre[0]):
-            a.append((x, y))
-            return True
-        else:
-            return False
+        return False
 
 
-b = []
 # // matrice pointiller
-
-
-def comparaison_ligne_horizontal(matrice_a_comparer, x, y):
-    "Compare une matrice aux position x et y avec la matrice pointiller"
-    global b
-    if 1 != 1:
-        # si pas la place (trop en bas ou trop a doite)
-        return False
-    else:
-        cpt = 0
-        for i in range(len(mat_ligne)):
-            mat = 2
-            if matrice_a_comparer[x+i][y] == 0:
-                mat = 0
-            elif matrice_a_comparer[x+i][y] == 1:
-                mat = 1
-            if mat == mat_carre[i][j]:
-                cpt += 1
-            else:
-                cpt += 0
-        if cpt == len(mat_ligne):
-            b.append((x, y))
-            return True
-        else:
-            return False
-
-
-b2 = []
-
-
-def comparaison_ligne_vertical(matrice_a_comparer, x, y):
-    "Compare une matrice à partire des position x et y avec la matrice pointiller, retourne True si pareil, faux si différent"
-    global b2
-    if 1 != 1:
-        # si pas la place (trop en bas ou trop a doite)
-        return False
-    else:
-        cpt = 0
-        for i in range(len(mat_ligne)):
-            mat = 2
-            if matrice_a_comparer[x][y+i] == 0:
-                mat = 0
-            elif matrice_a_comparer[x][y+i] == 1:
-                mat = 1
-            if mat == mat_carre[i][j]:
-                cpt += 1
-            else:
-                cpt += 0
-        if cpt == len(mat_ligne):
-            b2.append((x, y))
-            return True
-        else:
-            return False
 
 
 def recup_coin(matrice, x, y):
@@ -212,6 +149,32 @@ def recup_coin(matrice, x, y):
         for j in range(0, len(mat_carre[0])):
             res[i].append(matrice[x+i][y+j])
     return res
+
+
+def extraction_ligne(matrice, x, y, sens):
+    res = []
+    if sens == "h" :
+        for i in range(len(mat_ligne)):
+            res.append(matrice[x+i][y])
+    elif sens == "v" :
+        for i in range(len(mat_ligne)):
+            res.append(matrice[x][y+i])
+    return res
+
+
+def comparaison_ligne(matrice_a_comparer, x, y, sens):
+    "Compare une matrice à partire des position x et y avec la matrice pointiller, retourne True si pareil, faux si différent"
+    cpt = 0
+    matrice_a_comparer_tourne = extraction_ligne(matrice_a_comparer, x, y, sens)
+    for i in range(len(mat_ligne)):
+        if matrice_a_comparer_tourne[i] == mat_ligne[i]:
+            cpt += 1
+        else:
+            cpt += 0
+    if cpt == len(mat_ligne):
+        return True
+    else:
+        return False
 
 
 def regarde_coin_25(matrice):
@@ -272,6 +235,7 @@ def rotation(matrice):
             matrice_tourne[i][j] = matrice[-j-1][i]
 
     return matrice_tourne
+
 
 ############### QUESTION 3 ###################################@
 
@@ -525,9 +489,10 @@ def lecture_nmbr_bloc():
 def lire():
     "lance toute les étapes de la lecture : rotation, filtre, décodage"
     rotation_multiple(mat_charger, regarde_coin_25(mat_charger))
-    filtre()
-    decoder()
-    Label_message.configure(text="message : " + message)
+    if comparaison_ligne(mat_charger, 6, 8,"v") and comparaison_ligne(mat_charger, 8, 6,"h"):
+        filtre()
+        decoder()
+        Label_message.configure(text="message : " + message)
 
 ################
 # Tkinter
