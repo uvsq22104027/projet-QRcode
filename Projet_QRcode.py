@@ -304,7 +304,6 @@ def lecture_1_bloc_de_droite_a_gauche(x, y):
             mat_lecture[1][j] = res[j % 2][-4-k]
     mat_lecture[0][6] = res[1][3]
     mat_lecture[1][6] = res[0][0]
-    print(mat_lecture)
     return mat_lecture
 
 
@@ -356,6 +355,7 @@ def decoder():
 
 
 def question5(liste1, liste2):
+    "lit un bloc et retourne le message en ASCII ou Hexadécimal"
     global message
     s1 = 0
     s2 = 0
@@ -365,7 +365,7 @@ def question5(liste1, liste2):
     "lit la premiere partie du bloc et renvoie sa valeur en hexadecimal"
     if mat_charger[24][8] == 1:
         for i in range(len(liste1)):
-            s1 += (liste1[-i-1]*(2**i))
+            s1 += (liste1[i]*(2**i))
         if s1 == 10:
             s1 = "A"
         if s1 == 11:
@@ -378,11 +378,10 @@ def question5(liste1, liste2):
             s1 = "E"
         if s1 == 15:
             s1 = "F"
-        print(s1)
         message += str(s1)#str manger
         "lit la deuxieme partie du bloc et renvoie sa valeur en hexadecimal"
         for i in range(len(liste2)):
-            s2 += (liste2[-i-1]*(2**i))
+            s2 += (liste2[i]*(2**i))
         if s2 == 10:
             s2 = "A"
         if s2 == 11:
@@ -395,7 +394,6 @@ def question5(liste1, liste2):
             s2 = "E"
         if s2 == 15:
             s2 = "F"
-        print(s2)
         message += str(s2) #str manger
     ############# ASCII ############
         "lit le bloc en entier et renvoie sa valeur en ascii"
@@ -403,11 +401,11 @@ def question5(liste1, liste2):
         liste3 = []
         for i in range(len(liste)-1):
             liste3.append(liste[-i])
+        print(liste3)
         for i in range(len(liste3)):
             s += (liste3[-i-1]*(2**i))
         s = chr(s)
         message += s
-    print("message : ", message)
 
 
 ################ QUESTION 6 ################
@@ -422,7 +420,7 @@ def filtre_00(mat):
             modify(inverse_pour_modify(mat))
 
 
-"création de la matrice 01 (un damier dont la case en haut à gauche est noire"
+# création de la matrice 01 (un damier dont la case en haut à gauche est noire
 
 mat_01 = [[1]*14 for k in range(16)]
 
@@ -441,7 +439,7 @@ def filtre_01(mat):
             mat[i+9][j+11] = mat[i+9][j+11] ^ mat_01[i][j]
             modify(inverse_pour_modify(mat))
 
-"création de la matrice 10 (des lignes horizontales altern ́ees noires et blanches, la plus haute  ́etant noire"
+# création de la matrice 10 (des lignes horizontales altern ́ees noires et blanches, la plus haute  ́etant noire
 
 mat_10 = [[1]*14 for k in range(16)]
 for i in range(nbrLig(mat_10)):
@@ -457,7 +455,7 @@ def filtre_10(mat):
             mat[i][j] = mat[i][j] ^ mat_10[i][j]
             modify(inverse_pour_modify(mat))
 
-"création de la matrice 11 (des lignes verticales altern ́ees noires et blanches, la plus `a gauche  ́etant noire"
+# création de la matrice 11 (des lignes verticales altern ́ees noires et blanches, la plus `a gauche  ́etant noire
 
 mat_11 = [[1]*14 for k in range(16)]
 
@@ -483,7 +481,6 @@ def filtre():
             filtre_01(mat_charger)
     else:
         if (1-mat_charger[23][8]) == 0:
-            print(1-mat_charger[23][8])
             filtre_10(mat_charger)
         else:
             filtre_11(mat_charger)
@@ -506,11 +503,14 @@ def lecture_nmbr_bloc():
 
 def lire():
     "lance toute les étapes de la lecture : rotation, filtre, décodage"
+    global message
+    message = ""
     rotation_multiple(mat_charger, regarde_coin_25(mat_charger))
     if comparaison_ligne(mat_charger, 6, 8,"v") and comparaison_ligne(mat_charger, 8, 6,"h"):
         filtre()
         decoder()
         Label_message.configure(text="message : " + message)
+        print("message : ", message,)
 
 ################
 # Tkinter
